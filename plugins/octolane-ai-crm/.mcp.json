@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "octolane": {
+      "url": "https://mcp.octolane.com/mcp",
+      "headers": {
+        "X-API-Key": "${OCTOLANE_API_KEY}"
+      }
+    }
+  }
+}

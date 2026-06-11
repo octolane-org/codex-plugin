@@ -1,0 +1,20 @@
+{
+  "name": "octolane",
+  "interface": {
+    "displayName": "Octolane"
+  },
+  "plugins": [
+    {
+      "name": "octolane-ai-crm",
+      "source": {
+        "source": "local",
+        "path": "./plugins/octolane-ai-crm"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
