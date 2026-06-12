@@ -14,7 +14,8 @@
     "crm",
     "sales",
     "mcp",
-    "pipeline"
+    "pipeline",
+    "productivity"
   ],
   "mcpServers": "./.mcp.json",
   "interface": {
@@ -22,10 +23,11 @@
     "shortDescription": "Use Octolane CRM records, deals, tasks, and Signal data through MCP.",
     "longDescription": "Connect Codex to Octolane AI CRM via the hosted Octolane MCP server for pipeline reviews, account and contact lookup, deal updates, task management, meeting prep, and Signal website visitor intelligence.",
     "developerName": "Octolane",
-    "category": "Productivity",
+    "category": "CRM",
     "capabilities": [
       "MCP",
       "CRM",
+      "Productivity",
       "Read",
       "Write"
     ],

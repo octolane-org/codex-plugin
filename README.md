@@ -65,6 +65,6 @@ python3 -m json.tool plugins/octolane-ai-crm/.mcp.json >/dev/null
 - Marketplace display name: `Octolane`
 - Plugin name: `octolane-ai-crm`
 - Plugin display name: `Octolane AI CRM`
-- Category: `Productivity`
+- Category: `CRM`
 - Installation policy: `AVAILABLE`
 - Authentication policy: `ON_INSTALL`
