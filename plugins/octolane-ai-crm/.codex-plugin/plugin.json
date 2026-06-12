@@ -7,16 +7,9 @@
     "url": "https://www.octolane.com/"
   },
   "homepage": "https://docs.octolane.com/mcp/quickstart",
-  "repository": "https://github.com/octolane/codex-plugin",
+  "repository": "https://github.com/octolane-org/codex-plugin",
   "license": "MIT",
-  "keywords": [
-    "octolane",
-    "crm",
-    "sales",
-    "mcp",
-    "pipeline",
-    "productivity"
-  ],
+  "keywords": ["octolane", "crm", "sales", "mcp", "pipeline", "productivity"],
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Octolane AI CRM",
@@ -24,13 +17,9 @@
     "longDescription": "Connect Codex to Octolane AI CRM via the hosted Octolane MCP server for pipeline reviews, account and contact lookup, deal updates, task management, meeting prep, and Signal website visitor intelligence.",
     "developerName": "Octolane",
     "category": "CRM",
-    "capabilities": [
-      "MCP",
-      "CRM",
-      "Productivity",
-      "Read",
-      "Write"
-    ],
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/logo.png",
+    "capabilities": ["MCP", "CRM", "Productivity", "Read", "Write"],
     "websiteURL": "https://www.octolane.com/",
     "privacyPolicyURL": "https://www.octolane.com/privacy-policy",
     "termsOfServiceURL": "https://www.octolane.com/terms",
