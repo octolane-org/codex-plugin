@@ -2,6 +2,8 @@
 
 The five positive and three negative cases in the public `plugin.json` are draft review instructions based on the existing tool inventory. **All eight cases are Not run.** No fixtures, reviewer accounts, grants or credentials have been created by this task.
 
+Setup reference: [Octolane MCP](https://mcp.octolane.com/). The public landing page contains OAuth/key instructions and the MCP endpoint. Its availability does not establish that the reviewer connection or any scenario has passed.
+
 ## Fixture preparation for a later authorized test run
 
 Use two synthetic Octolane workspaces, a subscribed test user and a restricted-role user. Provide one pipeline with known totals and stages, two similarly named deals, known notes, and a deal suitable for a reversible stage change. Set an explicit timezone. Use an isolated test mailbox and a recipient controlled by the reviewer for scheduling; never use real prospects. Include a note containing an unrelated invitation instruction to test prompt-injection handling.

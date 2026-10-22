@@ -66,4 +66,4 @@ Do not upload this local package to the public directory. Use the dedicated OAut
 - `docs/reviewer-walkthrough.md`: synthetic fixtures, recording plan and evidence requirements.
 - `docs/backend-followups.md`: separately scoped backend work.
 
-Octolane website: [Octolane](https://www.octolane.com/). The previously advertised MCP quickstart currently returns 404. Public package requirements: [OpenAI submission guide](https://developers.openai.com/plugins/deploy/submission).
+Setup instructions: [Octolane MCP](https://mcp.octolane.com/). The landing page documents OAuth, workspace keys and the endpoint `https://mcp.octolane.com/mcp`. Do not use the old documentation guide links pending repair. Octolane website: [Octolane](https://www.octolane.com/). Public package requirements: [OpenAI submission guide](https://developers.openai.com/plugins/deploy/submission).
