@@ -1,0 +1,48 @@
+{
+  "gates": {
+    "publisher_verified": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "countries_languages_confirmed": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "listing_urls_verified": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "privacy_coverage_approved": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "oauth_runtime_passed": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "live_72_tool_contracts_passed": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "tenant_role_subscription_tests_passed": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "tool_annotations_approved": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "review_cases_passed": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "demo_recording_verified": {
+      "status": "pending",
+      "evidence": ""
+    },
+    "reviewer_access_verified": {
+      "status": "pending",
+      "evidence": ""
+    }
+  }
+}
