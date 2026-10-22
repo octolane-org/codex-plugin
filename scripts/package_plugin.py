@@ -118,6 +118,17 @@ def validate(root=ROOT, release=False):
         require(ui[key] in (file, './' + file), f'Unexpected asset path: {key}')
         check_png((package / file).read_bytes(), minimum)
     local = read_json(root / 'plugins/octolane-ai-crm/.codex-plugin/plugin.json')
+    require(local.get('mcpServers') == './.mcp.json', 'Local MCP reference changed')
+    local_mcp = read_json(root / 'plugins/octolane-ai-crm/.mcp.json')
+    require(local_mcp == {'mcpServers': {'octolane': {
+        'url': 'https://mcp.octolane.com/mcp',
+        'headers': {'X-API-Key': '${OCTOLANE_API_KEY}'}}}},
+        'Local API-key compatibility contract changed')
+    marketplace = read_json(root / '.agents/plugins/marketplace.json')
+    require(len(marketplace['plugins']) == 1 and marketplace['plugins'][0]['name'] == manifest['name']
+            and marketplace['plugins'][0]['source'] == {
+                'source': 'local', 'path': './plugins/octolane-ai-crm'},
+            'Local marketplace must retain compatibility package')
     require(local['name'] == manifest['name'] and local['version'] == manifest['version'],
             'Local/public identity or version drift')
     require(local['interface'] == ui, 'Local/public listing drift')
@@ -129,13 +140,10 @@ def validate(root=ROOT, release=False):
     require(set(mcp) == {'$schema', 'mcpServers'} and set(mcp['mcpServers']) == {'octolane'},
             'Unexpected MCP servers or fields')
     server = mcp['mcpServers']['octolane']
-    require(set(server) == {'type', 'url', 'extensions'},
+    require(set(server) == {'type', 'url'},
             'Public MCP config must not contain headers, credentials, or tool filters')
     require(server['type'] == 'streamable-http' and server['url'] == 'https://mcp.octolane.com/mcp',
             'Unexpected MCP endpoint/transport')
-    require(server['extensions'] == {'com.openai': {'auth': {
-        'type': 'oauth', 'client': {'mode': 'dcr'}, 'baseScopes': ['crm:read', 'crm:write']}}},
-        'OAuth config differs from the verified DCR discovery contract')
     tools = read_json(root / 'docs/tool-inventory.json')['tools']
     names = {t['name'] for t in tools}
     require(len(tools) == len(names) == 72, 'Expected 72 distinct existing tools')

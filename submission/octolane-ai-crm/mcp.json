@@ -3,21 +3,7 @@
   "mcpServers": {
     "octolane": {
       "type": "streamable-http",
-      "url": "https://mcp.octolane.com/mcp",
-      "extensions": {
-        "com.openai": {
-          "auth": {
-            "type": "oauth",
-            "client": {
-              "mode": "dcr"
-            },
-            "baseScopes": [
-              "crm:read",
-              "crm:write"
-            ]
-          }
-        }
-      }
+      "url": "https://mcp.octolane.com/mcp"
     }
   }
 }

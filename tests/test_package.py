@@ -17,7 +17,7 @@ class PackageTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        for directory in ('submission', 'plugins', 'docs'):
+        for directory in ('submission', 'plugins', 'docs', '.agents'):
             shutil.copytree(ROOT / directory, self.root / directory)
         self.source = self.root / package.PACKAGE
 
@@ -101,6 +101,18 @@ class PackageTests(unittest.TestCase):
     def test_duplicate_json_key_rejected(self):
         (self.source / 'mcp.json').write_text('{"mcpServers": {}, "mcpServers": {}}')
         with self.assertRaisesRegex(ValueError, 'Duplicate JSON key'):
+            package.validate(self.root)
+
+    def test_local_marketplace_cannot_switch_to_public_package(self):
+        self.edit(self.root / '.agents/plugins/marketplace.json', lambda d:
+                  d['plugins'][0]['source'].update({'path': './submission/octolane-ai-crm'}))
+        with self.assertRaisesRegex(ValueError, 'Local marketplace'):
+            package.validate(self.root)
+
+    def test_local_key_configuration_preserved(self):
+        self.edit(self.root / 'plugins/octolane-ai-crm/.mcp.json', lambda d:
+                  d['mcpServers']['octolane'].update({'headers': {}}))
+        with self.assertRaisesRegex(ValueError, 'Local API-key'):
             package.validate(self.root)
 
 

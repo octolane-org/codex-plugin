@@ -11,19 +11,22 @@ The release target is all 72 existing MCP tools for subscribed Octolane customer
 Source: `submission/octolane-ai-crm/`.
 
 - Portable Agent Plugins 1.0 `plugin.json` with listing metadata and five positive/three negative review scenarios.
-- `mcp.json` connects to `https://mcp.octolane.com/mcp` using streamable HTTP and OAuth DCR with `crm:read` and `crm:write`.
+- `mcp.json` connects to `https://mcp.octolane.com/mcp` using streamable HTTP. OAuth settings are discovered from the protected server; its metadata advertises DCR and `crm:read`/`crm:write`.
 - Discovery supplies authorization, token and registration endpoints. No client ID, secret, fixed headers or tool allowlist is packaged.
 - Users enter the desired workspace's MCP API key on Octolane's hosted authorization page. Never paste keys into chat. End-to-end compatibility is pending; a manifest declaration does not register a client or grant access.
 
-Run locally with Python 3.10+ (standard library only):
+Run locally with Python 3.10+. Packaging uses the standard library; schema checks/tests use the pinned development dependency:
 
 ```bash
+python3 -m pip install -r requirements-dev.txt
+python3 scripts/validate_schemas.py
 python3 scripts/package_plugin.py validate
 python3 -m unittest discover -s tests -v
 python3 scripts/package_plugin.py build --draft
+python3 scripts/validate_schemas.py --zip dist/octolane-ai-crm-0.2.0-draft.zip
 ```
 
-The draft ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. These are repository-specific checks, not an official OpenAI schema validator or approval.
+The draft ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. The public manifests also pass the published Agent Plugins 1.0 JSON schemas. Those schemas leave OpenAI extension semantics opaque; passing is not portal acceptance or runtime approval.
 
 A release build requires verified evidence in `docs/release-gates.json` and complete listing/review fields:
 
@@ -63,4 +66,4 @@ Do not upload this local package to the public directory. Use the dedicated OAut
 - `docs/reviewer-walkthrough.md`: synthetic fixtures, recording plan and evidence requirements.
 - `docs/backend-followups.md`: separately scoped backend work.
 
-Customer setup: [Octolane MCP quickstart](https://docs.octolane.com/mcp/quickstart). Public package requirements: [OpenAI submission guide](https://developers.openai.com/plugins/deploy/submission).
+Octolane website: [Octolane](https://www.octolane.com/). The previously advertised MCP quickstart currently returns 404. Public package requirements: [OpenAI submission guide](https://developers.openai.com/plugins/deploy/submission).
