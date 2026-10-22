@@ -8,6 +8,7 @@ Isolated backend checkout `../octolane-backend-review`, branch `rafi/oct-4270-ch
 
 - `3bb3884f7`: opaque grant-backed tokens with persisted scopes, canonical MCP resource, fixed expiry and per-client revocation.
 - `7a1f48cd0`: scope enforcement before tool handlers, consent propagation, accurate discovery and route regression coverage.
+- `8486caa1c`: explicit portable RequestHandler return type exposed by the full application declaration check.
 - Both author and committer verified as `md-abdul-halim-rafi <mdabdulhalimrafi@gmail.com>`. Standard commits, no hook bypass.
 
 The smallest implemented lifecycle is **24-hour grants and reauthorization, no refresh tokens**. Discovery advertises only authorization-code grants; refresh requests return unsupported_grant_type. Grant records expire in Redis and expiry is also checked in code. The opaque token is SHA-256 hashed for its Redis lookup key. Its backing workspace API key remains server-side in the grant record for at most that TTL; no encryption-at-rest change is claimed. Privacy/security owners must include this retention in review.
@@ -29,13 +30,16 @@ Six focused suites, **52 tests passed with normal type diagnostics enabled**:
 
 Redis and upstream services are mocked. No live Redis integration, actual browser/client connection or production behavior is claimed. The new tests protect independent authorization/transport contracts and introduce no production test seam. Existing socket-based MCP route suite attempted listen on 0.0.0.0 and was denied EPERM by the sandbox; it did not pass. The added scope-propagation test invokes the real router in-process with mocked transport. No timeout change or socket escalation was made.
 
-ESLint on all changed TypeScript and git diff --check passed. Full app `tsc --noEmit` did not pass: 56 errors from unresolved shared build declarations and related project dependencies in this isolated checkout. The production tsconfig intentionally targets shared/dist; root/production tsconfigs were not altered. A normal shared-package build and whole-app typecheck remain an independent local validation gate, deferred to avoid a resource-heavy build while the stats investigation has priority.
+ESLint on all changed TypeScript and git diff --check passed. The repository-supported package build order completed **serially and successfully** via `npm run build --workspace=@octolane/shared`, then `@octolane/ai`, then `@octolane/memory`. The full MCP application check `tsc --project apps/mcp/tsconfig.json --noEmit --pretty false` now exits 0. The earlier 56-error build-declaration blocker is resolved. No root/production tsconfig changes were needed.
 
-The prior SDK 7 mismatch is resolved for these tests: cached AI SDK 6.0.311, gateway 3.0.218, provider 3.0.19 and provider-utils 4.0.61 were integrity-checked against npm cache SHA-512 and extracted into this checkout's packages/ai/node_modules. No network package download or writes to another task's dependencies. Initial npm cache write attempts were denied; read-only cache extraction into this checkout succeeded. No disposable acceptance environment was created. Other dependencies are still reused read-only, so this is not proof of a clean install.
+The dependency correction exposed one scoped code issue: the inferred exported bearer-middleware return type referenced an external dependency path. Commit `8486caa1c` explicitly types it as Express RequestHandler. Lint and all six focused suites (52 tests, diagnostics enabled) passed again after the dependency corrections.
+
+Existing root node_modules remains read-only. Locally extracted, integrity-checked npm cache packages in this checkout match declared ranges: AI SDK 6.0.311; gateway 3.0.218; provider 3.0.19; provider-utils 4.0.61; anthropic 3.0.134; openai 3.0.130; MCP 1.0.98; perplexity 2.1.3; tRPC client/server 10.45.4. Local MCP workspace links point to this checkout's built shared/ai/memory packages. No network dependency downloads or changes to another task's installation occurred. This is passing local build/type/test evidence, not a claim that a clean CI install has run. The supported workspace build scripts were run directly because the umbrella script invokes root npm install, which would mutate reused dependencies.
+
 
 ## Submission gates and minimum next inputs
 
-1. Complete shared-package build/type validation when resources permit, then review/deploy the backend through separately authorized normal release steps. Current code is local only.
+1. Review and release the backend through separately authorized normal steps. Local package builds, whole-app types and focused tests are complete; current code is local only.
 2. Name the existing subscribed synthetic workspace, second tenant, test identities/roles, ChatGPT/Codex accounts and controlled mailbox. Obtain exact OAuth connection approval after identifying targets. Then approve bounded write/delete/outbound batches; no broad production tests.
 3. Run authenticated discovery and all 72 tool contracts, isolation/role/subscription checks, legacy client transition and the eight reviewer scenarios. Record actual evidence; mocks do not satisfy these gates.
 4. Confirm verified publisher, countries/languages, privacy owner approval (including grant retention and the earlier policy wording finding), and existing reviewer-access owner/account. No passwords or keys in chat/repository.
