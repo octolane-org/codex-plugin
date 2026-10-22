@@ -1,0 +1,510 @@
+{
+  "basis": "Static registration in local backend checkout; not production tools/list",
+  "backend_head": "8dfd3c748335f268e9201654b84b7479c3e4f9ae",
+  "tools": [
+    {
+      "name": "search_deals",
+      "key": "SEARCH_OPPORTUNITIES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/searchOpportunities.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_deal_details",
+      "key": "GET_OPPORTUNITY_DETAILS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/getOpportunityDetails.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "search_contacts",
+      "key": "SEARCH_CONTACTS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/searchContacts.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_contact_details",
+      "key": "GET_CONTACT_DETAILS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/getContactDetails.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "search_accounts",
+      "key": "SEARCH_COMPANIES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/searchCompanies.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_account_details",
+      "key": "GET_ACCOUNT_DETAILS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/getAccountDetails.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_record_history",
+      "key": "GET_RECORD_HISTORY",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/getRecordHistory.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_pipeline_overview",
+      "key": "GET_PIPELINE_OVERVIEW",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/getPipelineOverview.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "search_emails",
+      "key": "SEARCH_EMAILS",
+      "hint_group": "SYNC_READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/searchEmails.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_email_thread",
+      "key": "GET_EMAIL_THREAD",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/getEmailThread.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "schedule_bulk_emails",
+      "key": "SCHEDULE_BULK_EMAILS",
+      "hint_group": "EXTERNAL_CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/create/scheduleBulkEmails.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_scheduled_email",
+      "key": "UPDATE_SCHEDULED_EMAIL",
+      "hint_group": "EXTERNAL_IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/update/updateScheduledEmail.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "search_meetings",
+      "key": "SEARCH_MEETINGS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/searchMeetings.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_meeting_details",
+      "key": "GET_MEETING_DETAILS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/getMeetingDetails.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_account",
+      "key": "CREATE_ACCOUNT",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/create/createAccount.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_contact",
+      "key": "CREATE_CONTACT",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/create/createContact.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_deal",
+      "key": "CREATE_OPPORTUNITY",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/create/createOpportunity.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_update_accounts",
+      "key": "BULK_UPDATE_ACCOUNTS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/update/bulkUpdateRecords.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_update_contacts",
+      "key": "BULK_UPDATE_CONTACTS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/update/bulkUpdateRecords.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_update_deals",
+      "key": "BULK_UPDATE_DEALS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/update/bulkUpdateRecords.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_create_accounts",
+      "key": "BULK_CREATE_ACCOUNTS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/create/bulkCreateAccounts.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_create_contacts",
+      "key": "BULK_CREATE_CONTACTS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/create/bulkCreateContacts.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_create_deals",
+      "key": "BULK_CREATE_OPPORTUNITIES",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/create/bulkCreateOpportunities.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_notes",
+      "key": "GET_NOTES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/notes/getNotes.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_note",
+      "key": "CREATE_NOTE",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/notes/createNote.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_note",
+      "key": "UPDATE_NOTE",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/notes/updateNote.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_tasks",
+      "key": "GET_TASKS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/tasks/getTasks.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_task",
+      "key": "CREATE_TASK",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/tasks/createTask.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_task",
+      "key": "UPDATE_TASK",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/tasks/updateTask.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "log_activity",
+      "key": "LOG_ACTIVITY",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/activities/logActivity.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_activity",
+      "key": "UPDATE_ACTIVITY",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/activities/updateActivity.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_current_user",
+      "key": "WHO_AM_I",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/identity/whoami.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "list_workspace_members",
+      "key": "LIST_WORKSPACE_MEMBERS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/identity/listWorkspaceMembers.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "invite_team_member",
+      "key": "INVITE_TEAM_MEMBER",
+      "hint_group": "EXTERNAL_CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/identity/inviteTeamMember.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_signal_script",
+      "key": "GET_SIGNAL_SCRIPT",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/signal/getSignalScript.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_signal_visitors",
+      "key": "GET_SIGNAL_VISITORS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/signal/getVisitors.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_account_fields",
+      "key": "ACCOUNT_ATTRIBUTES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/accountAttributes.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_contact_fields",
+      "key": "CONTACT_ATTRIBUTES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/contactAttributes.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "get_deal_fields",
+      "key": "PIPELINE_ATTRIBUTES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/pipelineAttributes.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_account_field",
+      "key": "CREATE_ACCOUNT_FIELD",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/createAccountField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_account_field",
+      "key": "UPDATE_ACCOUNT_FIELD",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/updateAccountField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "delete_account_field",
+      "key": "DELETE_ACCOUNT_FIELD",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/deleteAccountField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_account_fields",
+      "key": "BULK_DELETE_ACCOUNT_FIELDS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/bulkDeleteAccountFields.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_contact_field",
+      "key": "CREATE_CONTACT_FIELD",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/createContactField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_contact_field",
+      "key": "UPDATE_CONTACT_FIELD",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/updateContactField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "delete_contact_field",
+      "key": "DELETE_CONTACT_FIELD",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/deleteContactField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_contact_fields",
+      "key": "BULK_DELETE_CONTACT_FIELDS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/bulkDeleteContactFields.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_pipeline_field",
+      "key": "CREATE_PIPELINE_FIELD",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/createPipelineField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_pipeline_field",
+      "key": "UPDATE_PIPELINE_FIELD",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/updatePipelineField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "delete_pipeline_field",
+      "key": "DELETE_PIPELINE_FIELD",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/deletePipelineField.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_pipeline_fields",
+      "key": "BULK_DELETE_PIPELINE_FIELDS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/attributes/bulkDeletePipelineFields.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "create_pipeline",
+      "key": "CREATE_PIPELINE",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/createPipeline.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "delete_pipeline",
+      "key": "DELETE_PIPELINE",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/deletePipeline.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "rename_pipeline",
+      "key": "RENAME_PIPELINE",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/renamePipeline.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "list_pipeline_stages",
+      "key": "LIST_PIPELINE_STAGES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/listPipelineStages.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "list_pipelines",
+      "key": "LIST_PIPELINES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/listPipelines.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "find_stale_deals",
+      "key": "FIND_STALE_DEALS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/search/findStaleDeals.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_deal_stage",
+      "key": "UPDATE_DEAL_STAGE",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/updateDealStage.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "move_deal_to_next_stage",
+      "key": "MOVE_DEAL_TO_NEXT_STAGE",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/moveDealToNextStage.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_upsert_stages",
+      "key": "BULK_UPSERT_STAGES",
+      "hint_group": "CREATE",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/bulkUpsertStages.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_stages",
+      "key": "BULK_DELETE_STAGES",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/pipeline/bulkDeleteStages.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_deals",
+      "key": "BULK_DELETE_DEALS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/delete/bulkDeleteOpportunities.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_accounts",
+      "key": "BULK_DELETE_ACCOUNTS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/delete/bulkDeleteAccounts.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_contacts",
+      "key": "BULK_DELETE_CONTACTS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/delete/bulkDeleteContacts.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_notes",
+      "key": "BULK_DELETE_NOTES",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/delete/bulkDeleteNotes.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "bulk_delete_tasks",
+      "key": "BULK_DELETE_TASKS",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/delete/bulkDeleteTasks.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "restore_deal",
+      "key": "RESTORE_OPPORTUNITY",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/delete/restoreOpportunity.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "update_calendar_event",
+      "key": "UPDATE_CALENDAR_EVENT",
+      "hint_group": "EXTERNAL_IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/calendar/updateCalendarEvent.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "memory_list",
+      "key": "MEMORY_LIST",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/memory/listMemory.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "memory_get",
+      "key": "MEMORY_GET",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/tools/handlers/memory/getMemory.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "memory_upsert",
+      "key": "MEMORY_UPSERT",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/memory/upsertMemory.ts",
+      "runtime_status": "Not run"
+    },
+    {
+      "name": "memory_delete",
+      "key": "MEMORY_DELETE",
+      "hint_group": "IDEMPOTENT_WRITE",
+      "source": "apps/mcp/src/mcp/tools/handlers/memory/deleteMemory.ts",
+      "runtime_status": "Not run"
+    }
+  ]
+}
