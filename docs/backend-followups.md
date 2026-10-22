@@ -1,10 +1,10 @@
 # Backend PR scope — separate from this plugin change
 
-No backend implementation is included in OCT-4270's plugin repository changes.
+Backend implementation is isolated in the sibling `octolane-backend-review` checkout on the same OCT-4270 branch. No backend code is bundled in the plugin ZIP.
 
 ## Annotation compatibility
 
-In `apps/mcp/src/mcp/constants/tools.ts`, 25 registered READ tools omit `destructiveHint`. Add explicit booleans after checking actual behavior against OpenAI requirements. Audit additive writes, external effects and `search_emails` cache synchronization as well. Do not mechanically declare every search read-only or every create destructive.
+In `apps/mcp/src/mcp/constants/tools.ts`, 25 registered READ tools omit `destructiveHint`. A local patch now supplies `destructiveHint: false` for READ and EXTERNAL_READ, preserving their existing read-only classification. A regression enumerates the real registrars and verifies 72 unique tools and explicit required booleans. This does not establish that every existing classification is semantically accurate. Audit additive writes, external effects and `search_emails` cache synchronization as well. Do not mechanically declare every search read-only or every create destructive.
 
 Acceptance: authenticated `tools/list` has all 72 agreed tool names with accurate `readOnlyHint`, `destructiveHint` and `openWorldHint`; schemas and descriptions match implementation. Preserve the Claude integration.
 

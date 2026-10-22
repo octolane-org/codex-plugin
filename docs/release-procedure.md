@@ -2,7 +2,7 @@
 
 ## Current implementation
 
-The plugin-side v0.2.0 source, static checks, deterministic draft ZIP, and reviewer scenario metadata are implemented. The local Codex key-header package remains a separate distribution. No tools are removed or reimplemented. Current public source omits unknown support URL, demo URL, country targeting, commerce declarations and verified publisher assertions. Existing author identity is retained without implying verification.
+The plugin-side v0.2.0 source, static checks, deterministic draft ZIP, and reviewer scenario metadata are implemented. The local Codex key-header package remains a separate distribution. No tools are removed or reimplemented. Current public source omits demo URL, country targeting, commerce declarations and verified publisher assertions. Existing author identity is retained without implying verification.
 
 Public MCP configuration now uses only schema-valid transport/endpoint fields and relies on OAuth discovery. Public metadata advertises DCR, authorization-code flow and PKCE S256. The prior per-server OAuth extension was removed because the actual published MCP schema rejects it; see `schemas/README.md`. This defines an intended discovery path only. No client registration, key creation, OAuth grant or account setup occurred.
 
@@ -11,7 +11,7 @@ Public MCP configuration now uses only schema-valid transport/endpoint fields an
 `docs/release-gates.json` records release evidence outside the public package. Each gate needs `status: passed` plus a nonblank evidence reference after actual verification. Keep credentials and sensitive logs outside the repository. These records support human review; a script cannot authenticate their truth.
 
 1. Confirm verified publisher, countries/languages and support ownership. Do not infer countries from the company address. Confirm the plugin only accesses existing subscriptions and does not sell subscriptions.
-2. Verify all four listing URLs and actual content. The advertised `https://docs.octolane.com/support` redirected to `https://www.octolane.com/support`; direct HTTP returned 404 on 21 October 2026 Pacific. Supply an accessible support page, then set `supportURL` in both public and local manifests. Do not substitute a guessed URL or `mailto:`.
+2. Verify all four listing URLs and actual content. The advertised `https://docs.octolane.com/support` redirected to `https://www.octolane.com/support`; direct HTTP returned 404 on 21 October 2026 Pacific. The existing `https://octolane.com/docs/support/contact` was verified HTTP 200 and is now set as `supportURL` in both manifests. Do not substitute a guessed URL or `mailto:`.
 3. Have the owner validate privacy/terms coverage for all tools. The policy's “Attio services” wording requires correction or clarification by its owner. No legal text was changed here.
 4. Complete backend follow-ups and validate OAuth, revoked keys, tenant/role/subscription enforcement and all 72 live tool contracts. Preserve evidence of actual calls, results and annotations. Keep migration workflows deferred.
 5. Run the five positive/three negative review cases and broader per-tool coverage with synthetic fixtures. Record failed and not-run cases honestly.

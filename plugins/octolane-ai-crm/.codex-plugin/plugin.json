@@ -41,6 +41,7 @@
       "Show my Octolane pipeline overview.",
       "Find stale deals in Octolane.",
       "Prepare me for my next sales call."
-    ]
+    ],
+    "supportURL": "https://octolane.com/docs/support/contact"
   }
 }
