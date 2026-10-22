@@ -1,6 +1,6 @@
 {
   "name": "octolane-ai-crm",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Connect Codex to Octolane AI CRM through Octolane MCP.",
   "author": {
     "name": "Octolane",
@@ -9,17 +9,30 @@
   "homepage": "https://docs.octolane.com/mcp/quickstart",
   "repository": "https://github.com/octolane-org/codex-plugin",
   "license": "MIT",
-  "keywords": ["octolane", "crm", "sales", "mcp", "pipeline", "productivity"],
+  "keywords": [
+    "octolane",
+    "crm",
+    "sales",
+    "mcp",
+    "pipeline",
+    "productivity"
+  ],
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Octolane AI CRM",
-    "shortDescription": "Use Octolane CRM records, deals, tasks, and Signal data through MCP.",
-    "longDescription": "Connect Codex to Octolane AI CRM via the hosted Octolane MCP server for pipeline reviews, account and contact lookup, deal updates, task management, meeting prep, and Signal website visitor intelligence.",
+    "shortDescription": "Manage your CRM in chat",
+    "longDescription": "Connect your Octolane workspace to review pipelines, search and manage accounts, contacts and deals, work with tasks and notes, and use Octolane MCP capabilities for meetings, email, calendar updates, workspace memory and Signal data. Available to subscribed Octolane customers, subject to workspace permissions and connected-service access.",
     "developerName": "Octolane",
-    "category": "CRM",
+    "category": "Business & Operations",
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/logo.png",
-    "capabilities": ["MCP", "CRM", "Productivity", "Read", "Write"],
+    "capabilities": [
+      "MCP",
+      "CRM",
+      "Productivity",
+      "Read",
+      "Write"
+    ],
     "websiteURL": "https://www.octolane.com/",
     "privacyPolicyURL": "https://www.octolane.com/privacy-policy",
     "termsOfServiceURL": "https://www.octolane.com/terms",
