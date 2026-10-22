@@ -1,5 +1,7 @@
 # OCT-4270: ChatGPT/Codex release readiness
 
+**Implementation update:** this document records the initial audit. Plugin-side public packaging, metadata, draft review cases, static validation and a deterministic draft archive are now implemented. See [release procedure](release-procedure.md) for current status. The original findings below remain evidence of the starting point; backend/runtime/reviewer gates remain open.
+
 Audit date: 21 October 2026 (Pacific). Branch: `rafi/oct-4270-chatgptcodex-plugin`.
 
 ## Outcome
