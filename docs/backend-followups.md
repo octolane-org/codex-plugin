@@ -1,5 +1,7 @@
 # Backend PR scope — separate from this plugin change
 
+Update: the OAuth implementation and annotation corrections are committed locally in the sibling backend checkout. See [current checkpoint](local-readiness-checkpoint.md). Findings below describe the original source/deployed audit; they are not claims that the fixes have shipped.
+
 Backend implementation is isolated in the sibling `octolane-backend-review` checkout on the same OCT-4270 branch. No backend code is bundled in the plugin ZIP.
 
 ## Annotation compatibility

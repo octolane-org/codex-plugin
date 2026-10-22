@@ -1,5 +1,7 @@
 # OAuth correctness checkpoint — 22 October 2026
 
+**Historical findings below have now been addressed locally by backend commits `3bb3884f7` and `7a1f48cd0`. See [current checkpoint](local-readiness-checkpoint.md) for implementation, evidence and remaining gates. Nothing is deployed.**
+
 Source findings refer to the isolated backend checkout, not a proven deployed exploit. Severity is engineering triage, not a CVSS assessment. The live service has not received these commits.
 
 ## Confirmed defects repaired locally
