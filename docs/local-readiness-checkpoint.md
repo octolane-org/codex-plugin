@@ -34,6 +34,6 @@ Detailed operational contract: `apps/mcp/docs/oauth-refresh-rollout.md` in backe
 5. Record a real successful demo and provide a reviewer-accessible video URL; validate all public links again before submission.
 6. Release the backend through separately authorized normal deployment, enable issuance only after rollout gates, then populate real evidence in release-gates.json and build the release ZIP. Submission still requires explicit authorization.
 
-The original Codex marketplace and API-key package are preserved. Their X-API-Key transport has not been live reverified. The public package discovers OAuth and contains no fixed headers, credentials or tool allowlist; all 72 tools remain served by the backend.
+The original Codex marketplace and API-key package are preserved. The local package now uses native bearer_token_env_var binding, replacing the incompatible X-API-Key mapping. Live host environment/key validation remains unverified. The public package discovers OAuth and contains no fixed headers, credentials or tool allowlist; all 72 tools remain served by the backend.
 
 Setup: https://mcp.octolane.com/. Support: https://octolane.com/docs/support/contact. Earlier broken guide URLs remain only in historical audit evidence. Neither workflow configuration nor local test output is a claim that GitHub CI ran.

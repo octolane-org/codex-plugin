@@ -53,7 +53,7 @@ Then install **Octolane AI CRM** from Codex Plugins. For local development:
 codex plugin marketplace add /absolute/path/to/codex-plugin
 ```
 
-The marketplace still points to `plugins/octolane-ai-crm/`. That compatibility package uses `OCTOLANE_API_KEY` in its `X-API-Key` header. Configure the variable privately in the Codex environment using the key from the desired Octolane workspace; do not commit or share its value. The existing local install route was preserved but not reinstalled during this change.
+The marketplace still points to `plugins/octolane-ai-crm/`. That compatibility package uses the native `bearer_token_env_var: "OCTOLANE_API_KEY"` binding to send `Authorization: Bearer <key>`. Configure the variable privately in the Codex environment using the key from the desired Octolane workspace; do not commit or share its value. The existing local install route was preserved but not reinstalled during this change.
 
 Do not upload this local package to the public directory. Use the dedicated OAuth source and build command above. Identity, version, listing fields and assets are checked for consistency across the two packages; authentication intentionally differs.
 

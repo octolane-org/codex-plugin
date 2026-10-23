@@ -67,14 +67,19 @@ Then reopen the plugin details and start a new session. Verify that the installe
 copy contains the new icon; don't assume the host hot-reloads an edited source.
 Use the host's normal update/install flow if its copy remains cached.
 
-**Important transport prerequisite:** the local `.mcp.json` uses
-`X-API-Key: ${OCTOLANE_API_KEY}` and points to `https://mcp.octolane.com/mcp`.
-The inspected backend mounts SDK Bearer middleware at `/mcp`, with no X-API-Key
-translation in that app. Direct local X-API-Key interoperability is therefore
-unverified and appears mismatched. Do not call production to investigate it or
-silently change the shipped header. Resolve the intended gateway/header contract
-before claiming this local package's tools work. Testing Bearer in Inspector
-alone does not validate the packaged X-API-Key path.
+**Corrected transport contract:** the local `.mcp.json` now declares
+`bearer_token_env_var: "OCTOLANE_API_KEY"`. Codex resolves this native environment
+binding into `Authorization: Bearer <key>`, matching the backend SDK middleware.
+The old X-API-Key mapping is removed. Do not replace it with an inline key or
+assume header-string `${...}` interpolation is supported. The public OAuth
+package remains header-free.
+
+The official compatibility plugin parser deserializes native McpServerConfig,
+whose HTTP transport supports bearer_token_env_var. The bundled CLI help also
+confirms bearer environment binding. A synthetic SDK middleware check accepts
+the resolved Bearer shape and rejects X-API-Key-only traffic. This proves the
+configuration/wire contract, not live host environment inheritance or real key
+validation; those still need the approved installation test.
 
 After an approved non-production endpoint and this contract are confirmed,
 point the **local working copy** of `plugins/octolane-ai-crm/.mcp.json` at that
@@ -208,7 +213,7 @@ HTTP. No installed-host screenshots, live discovery, reads/writes, OAuth grants,
 refresh, production traffic or account-setting changes were performed here.
 
 Needed from Rafi: normal runtime owner/checkout, approved non-production endpoint
-and matching issuer, resolution of X-API-Key vs Bearer, existing subscribed test
+and matching issuer, private bearer environment availability, existing subscribed test
 workspace and second tenant/roles, chosen Codex/ChatGPT accounts, private key input
 method and explicit install/OAuth approval. Approve write/revoke/replay/outage
 batches separately. Real Redis Lua CAS, no-eviction durability, persistence and
@@ -220,3 +225,6 @@ Sources checked 23 October 2026: [Build plugins](https://developers.openai.com/p
 [Connect and test](https://developers.openai.com/plugins/deploy/connect-chatgpt),
 [Codex plugins](https://developers.openai.com/codex/plugins),
 and the bundled CLI's `plugin add --help` / `plugin marketplace add --help`.
+
+Configuration evidence: [official compatibility parser](https://github.com/openai/codex/blob/main/codex-rs/codex-mcp/src/plugin_config.rs)
+and [native MCP configuration](https://github.com/openai/codex/blob/main/codex-rs/config/src/mcp_types.rs).
