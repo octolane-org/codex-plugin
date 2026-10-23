@@ -6,6 +6,8 @@ The release target is all 72 existing MCP tools for subscribed Octolane customer
 
 **Status: draft, not submitted or approved.** Static packaging works; OAuth runtime tests, live tool verification, backend release, Redis durability verification, and review materials remain release gates. See [current readiness](docs/local-readiness-checkpoint.md) and [release procedure](docs/release-procedure.md).
 
+Start with the [local end-to-end testing guide](docs/local-testing.md). See [official branding and screenshot evidence](docs/branding.md) for the updated icons.
+
 ## Public package (OAuth)
 
 Source: `submission/octolane-ai-crm/`.
