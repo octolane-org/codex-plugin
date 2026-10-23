@@ -109,11 +109,24 @@ class PackageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Local marketplace'):
             package.validate(self.root)
 
-    def test_local_key_configuration_preserved(self):
-        self.edit(self.root / 'plugins/octolane-ai-crm/.mcp.json', lambda d:
-                  d['mcpServers']['octolane'].update({'headers': {}}))
-        with self.assertRaisesRegex(ValueError, 'Local API-key'):
-            package.validate(self.root)
+    def test_local_key_uses_native_bearer_environment_binding(self):
+        path = self.root / 'plugins/octolane-ai-crm/.mcp.json'
+        server = json.loads(path.read_text())['mcpServers']['octolane']
+        self.assertEqual(server.get('bearer_token_env_var'), 'OCTOLANE_API_KEY')
+        self.assertNotIn('headers', server)
+        self.assertNotIn('http_headers', server)
+        original = path.read_text()
+        # The native config contract must reject both the original unsupported
+        # header path and inline secret/template values, not just missing auth.
+        for auth in ({}, {'headers': {'X-API-Key': '${OCTOLANE_API_KEY}'}},
+                     {'headers': {'Authorization': 'Bearer ${OCTOLANE_API_KEY}'}},
+                     {'http_headers': {'Authorization': 'Bearer synthetic-secret'}}):
+            with self.subTest(auth=auth):
+                path.write_text(json.dumps({'mcpServers': {'octolane': {
+                    'url': server['url'], **auth}}}))
+                with self.assertRaisesRegex(ValueError, 'Local API-key'):
+                    package.validate(self.root)
+                path.write_text(original)
 
 
 if __name__ == '__main__':

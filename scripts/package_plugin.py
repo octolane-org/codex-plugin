@@ -122,7 +122,7 @@ def validate(root=ROOT, release=False):
     local_mcp = read_json(root / 'plugins/octolane-ai-crm/.mcp.json')
     require(local_mcp == {'mcpServers': {'octolane': {
         'url': 'https://mcp.octolane.com/mcp',
-        'headers': {'X-API-Key': '${OCTOLANE_API_KEY}'}}}},
+        'bearer_token_env_var': 'OCTOLANE_API_KEY'}}},
         'Local API-key compatibility contract changed')
     marketplace = read_json(root / '.agents/plugins/marketplace.json')
     require(len(marketplace['plugins']) == 1 and marketplace['plugins'][0]['name'] == manifest['name']
