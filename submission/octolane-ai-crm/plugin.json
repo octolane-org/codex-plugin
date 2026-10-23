@@ -38,7 +38,7 @@
         "websiteURL": "https://www.octolane.com/",
         "privacyPolicyURL": "https://www.octolane.com/privacy-policy",
         "termsOfServiceURL": "https://www.octolane.com/terms",
-        "brandColor": "#111827",
+        "brandColor": "#000000",
         "defaultPrompt": [
           "Show my Octolane pipeline overview.",
           "Find stale deals in Octolane.",
