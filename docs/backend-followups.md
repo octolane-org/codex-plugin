@@ -1,3 +1,5 @@
+> Historical audit snapshot. For current OAuth behavior, publication state and remaining gates, see [local readiness](local-readiness-checkpoint.md). Earlier no-refresh findings below describe the audited baseline, not the revised PR.
+
 # Backend PR scope — separate from this plugin change
 
 Update: the OAuth implementation and annotation corrections are committed locally in the sibling backend checkout. See [current checkpoint](local-readiness-checkpoint.md). Findings below describe the original source/deployed audit; they are not claims that the fixes have shipped.

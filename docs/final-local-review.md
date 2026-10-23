@@ -1,3 +1,5 @@
+> Historical audit snapshot. For current OAuth behavior, publication state and remaining gates, see [local readiness](local-readiness-checkpoint.md). Earlier no-refresh findings below describe the audited baseline, not the revised PR.
+
 # OCT-4270 local review — 21 October 2026 Pacific
 
 Latest local OAuth work and test results: [22 October checkpoint](local-readiness-checkpoint.md). The evidence below is the earlier package review.

@@ -1,3 +1,5 @@
+> Historical audit snapshot. For current OAuth behavior, publication state and remaining gates, see [local readiness](local-readiness-checkpoint.md). Earlier no-refresh findings below describe the audited baseline, not the revised PR.
+
 # OCT-4270: ChatGPT/Codex release readiness
 
 **Implementation update:** this document records the initial audit. Plugin-side public packaging, metadata, draft review cases, static validation and a deterministic draft archive are now implemented. See [release procedure](release-procedure.md) for current status. The original findings below remain evidence of the starting point; backend/runtime/reviewer gates remain open.

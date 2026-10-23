@@ -4,7 +4,7 @@ Plugin packaging for Octolane's hosted MCP server. Version 0.2.0 prepares a Chat
 
 The release target is all 72 existing MCP tools for subscribed Octolane customers, subject to workspace permissions and connected-service access. This repository does not implement, proxy, or filter the tools. The MCP server owns discovery and execution. Migration workflows are deferred to iteration two.
 
-**Status: draft, not submitted or approved.** Static packaging works; OAuth runtime tests, live tool verification, backend annotation fixes, and review materials remain release gates. See [readiness](docs/release-readiness.md) and [release procedure](docs/release-procedure.md).
+**Status: draft, not submitted or approved.** Static packaging works; OAuth runtime tests, live tool verification, backend release, Redis durability verification, and review materials remain release gates. See [current readiness](docs/local-readiness-checkpoint.md) and [release procedure](docs/release-procedure.md).
 
 ## Public package (OAuth)
 

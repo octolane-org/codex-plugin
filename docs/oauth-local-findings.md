@@ -1,3 +1,5 @@
+> Historical audit snapshot. For current OAuth behavior, publication state and remaining gates, see [local readiness](local-readiness-checkpoint.md). Earlier no-refresh findings below describe the audited baseline, not the revised PR.
+
 # OAuth correctness checkpoint — 22 October 2026
 
 **Historical findings below have now been addressed locally by backend commits `3bb3884f7` and `7a1f48cd0`. See [current checkpoint](local-readiness-checkpoint.md) for implementation, evidence and remaining gates. Nothing is deployed.**
