@@ -1,6 +1,6 @@
 # Current release checkpoint — 23 October 2026
 
-**Review draft, not submission-ready.** Backend changes are in [PR #4649](https://github.com/octolane-org/octolane-backend/pull/4649). The separate plugin branch is being published for review against main. Neither repository is deployed or submitted by this task. Historical audit documents are retained as evidence and are superseded by this checkpoint.
+**Review draft, not submission-ready.** Backend changes are in [PR #4649](https://github.com/octolane-org/octolane-backend/pull/4649). The separate plugin package is published in [PR #1](https://github.com/octolane-org/codex-plugin/pull/1) against main; its initial package CI passed. Neither repository is deployed or submitted by this task. Historical audit documents are retained as evidence and are superseded by this checkpoint.
 
 ## Revised OAuth behavior
 
@@ -8,7 +8,7 @@ The backend now implements one-hour opaque access tokens and client-bound rotati
 
 Refresh preserves resource/client binding, allows scope narrowing but never expansion, revalidates the backing key/member, and revokes the entire family on authentic old-token replay outside a 30-second retry window. Simultaneous refreshes and lost-response retries within that window receive the same successor; even immediate use of that successor remains stable for the window. A stale retry after the window can require authorization again. A narrower refresh does not retroactively change already issued access tokens, which expire within one hour.
 
-Transient Redis or primary failures return retryable server_error rather than invalid_grant. The workspace key is never returned as a refresh credential. Family records contain sensitive backing keys, per-family HMAC secrets and the last response for up to the renewable 90-day inactivity period. No encryption-at-rest change or production storage guarantee is claimed.
+Transient Redis or primary failures return server_error rather than invalid_grant. This preserves server-side retryability but does **not** guarantee that a host avoids reconnect UI: the actual SDK auth() client returns REDIRECT after one HTTP 500 server_error refresh response without invalidating tokens; HTTP 200 returns AUTHORIZED and saves the successor without redirect. A later explicit retry can recover with retained tokens, but the first redirect already occurred. Ordinary successful expiry renewal and transient-outage UX are separate contracts. Verify each actual host's redirect, token retention, backoff and recovery behavior before claiming interruption-free renewal. The workspace key is never returned as a refresh credential. Family records contain sensitive backing keys, per-family HMAC secrets and the last response for up to the renewable 90-day inactivity period. No encryption-at-rest change or production storage guarantee is claimed.
 
 Existing raw-key connections retain current key/member validation and do not receive the new fixed OAuth TTL. Synthetic SDK bearer coverage accepts the same key after 370 days and rejects it after primary reports inactivity. Existing opaque no-family tokens retain their original stored expiry. Existing clients cannot be retroactively given refresh credentials or have their cached expiry overridden; no forced migration is proposed. Pre-upgrade in-flight codes lacking scope/resource may need authorization restarted.
 
@@ -18,7 +18,7 @@ Detailed operational contract: `apps/mcp/docs/oauth-refresh-rollout.md` in backe
 
 ## Evidence and limits
 
-- Backend: 68 focused tests cover actual SDK handlers with synthetic primary/storage, consent/PKCE, optional scope/redirect compatibility, renewal through time advancement, narrowing, replay, concurrent rotation, revocation races, outages/recovery, old raw/opaque credentials, scope enforcement, roles and 72-tool registry integrity. The renewal regression fails against the pre-refresh provider with HTTP 400.
+- Backend: 70 focused tests (including two real SDK client-path cases) cover actual SDK handlers with synthetic primary/storage, consent/PKCE, optional scope/redirect compatibility, renewal through time advancement, narrowing, replay, concurrent rotation, revocation races, outages/recovery, old raw/opaque credentials, scope enforcement, roles and 72-tool registry integrity. The renewal regression fails against the pre-refresh provider with HTTP 400.
 - Backend full MCP TypeScript and changed-file lint have passed locally. Shared/AI/memory builds passed in the preceding checkpoint; no package code changed for refresh. Normal pre-push compilation is required before publication.
 - Tests mock the atomic Redis primitive. Its Lua script has not been executed against live Redis. Externally managed Redis is configured in the repository, but persistence, no-eviction, acknowledged-write durability and failover have **not** been verified. Stale restores can resurrect revocations; this is a release blocker until resolved.
 - The preexisting socket test was denied by the sandbox (listen 0.0.0.0, EPERM), was not retried, and is not a passing test. In-process SDK/route coverage does not replace a live host connection.
