@@ -18,8 +18,8 @@ python3 -m venv .venv
 .venv/bin/python scripts/package_plugin.py validate
 .venv/bin/python -m unittest discover -s tests -v
 .venv/bin/python scripts/package_plugin.py build --draft
-.venv/bin/python scripts/validate_schemas.py --zip dist/octolane-ai-crm-0.2.0-draft.zip
-unzip -l dist/octolane-ai-crm-0.2.0-draft.zip
+.venv/bin/python scripts/validate_schemas.py --zip dist/octolane-0.2.0-draft.zip
+unzip -l dist/octolane-0.2.0-draft.zip
 ```
 
 Reuse `.venv` on subsequent runs. Expected archive: plugin.json, mcp.json,
@@ -30,7 +30,7 @@ acceptance. No server start is needed for this section.
 
 ## 2. Load the local Codex package (API-key path)
 
-The installed Mac app bundles CLI 0.163.0-alpha.11.1. Its help confirms these
+The installed Mac app bundles CLI 0.163.0-alpha.11.2. Its help confirms these
 commands; `codex` was not on this task's PATH. Use the bundled executable:
 
 ```sh
@@ -39,7 +39,7 @@ CODEX_BIN=/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex
 "$CODEX_BIN" plugin marketplace list
 "$CODEX_BIN" plugin list
 "$CODEX_BIN" plugin marketplace add "$PWD"
-"$CODEX_BIN" plugin add octolane-ai-crm@octolane
+"$CODEX_BIN" plugin add octolane@octolane
 ```
 
 Review the existing marketplace/installation first. If `octolane` or this plugin
@@ -51,21 +51,13 @@ prompt. Marketplace policy is ON_INSTALL.
 
 Open **Plugins** in the ChatGPT desktop app, find the local Octolane marketplace,
 and inspect the list tile and plugin details. The source is
-`plugins/octolane-ai-crm/.codex-plugin/plugin.json`. Start a new Codex session
+`plugins/octolane/.codex-plugin/plugin.json`. Start a new Codex session
 and inspect the @ picker/composer icon. Capture light/dark screenshots of list,
 details and composer, without keys, emails or customer records. Compare to
 `docs/screenshots/asset-sizes-light-dark.png`. There is no custom MCP App UI in
 this package to test. The IDE extension does not support plugins.
 
-For a later approved source refresh:
-
-```sh
-"$CODEX_BIN" plugin marketplace upgrade octolane
-```
-
-Then reopen the plugin details and start a new session. Verify that the installed
-copy contains the new icon; don't assume the host hot-reloads an edited source.
-Use the host's normal update/install flow if its copy remains cached.
+For a local-folder source refresh, restart the desktop app, reopen the plugin details and start a new session. Verify the installed identity and copy; do not assume source edits hot-reload. The current CLI's `plugin marketplace upgrade` refreshes Git marketplace snapshots, so it is not a verified refresh mechanism for this local folder. Use the host's supported update/reinstall flow after confirming the intended installation. See [identity migration](identity-migration.md) for the renamed package.
 
 **Corrected transport contract:** the local `.mcp.json` now declares
 `bearer_token_env_var: "OCTOLANE_API_KEY"`. Codex resolves this native environment
@@ -82,10 +74,10 @@ configuration/wire contract, not live host environment inheritance or real key
 validation; those still need the approved installation test.
 
 After an approved non-production endpoint and this contract are confirmed,
-point the **local working copy** of `plugins/octolane-ai-crm/.mcp.json` at that
+point the **local working copy** of `plugins/octolane/.mcp.json` at that
 endpoint before loading it; keep this test-only URL change out of commits and
 restore it after testing. Leave the public submission package unchanged. Use
-`git diff -- plugins/octolane-ai-crm/.mcp.json` to inspect the exact local change.
+`git diff -- plugins/octolane/.mcp.json` to inspect the exact local change.
 Do not proceed while the package still targets production.
 
 For a CLI session only, Rafi can privately enter the existing test workspace key
@@ -164,7 +156,7 @@ conversation, and select the plugin with @.
 This validates the MCP connection; it does not by itself test the packaged
 listing assets or establish directory approval. Test the complete package's
 listing in the supported local marketplace separately. A public package has
-`submission/octolane-ai-crm/mcp.json`, uses discovery and contains no API-key
+`submission/octolane/mcp.json`, uses discovery and contains no API-key
 header. Do not upload the local legacy manifest as the public package.
 
 Optional direct inspection, after approving tool download and endpoint access:

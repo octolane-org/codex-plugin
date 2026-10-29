@@ -36,7 +36,7 @@ python3 scripts/validate_schemas.py
 python3 scripts/package_plugin.py validate
 python3 -m unittest discover -s tests -v
 python3 scripts/package_plugin.py build --draft
-python3 scripts/validate_schemas.py --zip dist/octolane-ai-crm-0.2.0-draft.zip
+python3 scripts/validate_schemas.py --zip dist/octolane-0.2.0-draft.zip
 ```
 
 Expected current result: static checks and tests pass; draft artifact is produced with outstanding readiness gaps printed. `build` without `--draft` must fail until real release evidence and missing fields are complete. No release-date guarantee follows from passing these checks; any November target depends on readiness and review approval.
