@@ -1,7 +1,7 @@
 {
-  "name": "octolane-ai-crm",
+  "name": "octolane",
   "version": "0.2.0",
-  "description": "Connect ChatGPT and Codex to Octolane AI CRM through the hosted Octolane MCP server.",
+  "description": "Revenue superintelligence built for modern sales and go-to-market teams.",
   "author": {
     "name": "Octolane",
     "url": "https://www.octolane.com/"
@@ -21,9 +21,9 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "Octolane AI CRM",
-        "shortDescription": "Manage your CRM in chat",
-        "longDescription": "Connect your Octolane workspace to review pipelines, search and manage accounts, contacts and deals, work with tasks and notes, and use Octolane MCP capabilities for meetings, email, calendar updates, workspace memory and Signal data. Available to subscribed Octolane customers, subject to workspace permissions and connected-service access.",
+        "displayName": "Octolane",
+        "shortDescription": "Revenue Superintelligence",
+        "longDescription": "Revenue superintelligence built for modern sales and go-to-market teams. Connect Octolane to ChatGPT and Codex to read and manage your revenue workflow.\n\nPipeline & deal management: Search deals, get full deal details, create new opportunities, move deals through pipeline stages, and get instant pipeline overviews with deal counts and total values. Create and customize sales pipelines, stages, and custom fields on the fly.\n\nContacts & accounts: Search, create, update, and enrich contacts and companies by name, email, domain, industry, or job title. Bulk create up to 50 records or update up to 25 records in one request.\n\nEmail & meetings: Search email threads with any contact or account, schedule emails for future delivery via your connected Gmail, and pull full meeting transcripts and attendee lists to prep for calls or write follow-ups.\n\nTasks, notes & activities: Create tasks linked to deals, contacts, or accounts; log calls, meetings, and LinkedIn touches; and keep notes attached to the right records.\n\nWebsite visitor intelligence: Identify companies visiting your website with Octolane Signal and turn anonymous traffic into pipeline.\n\nAI memory: Octolane stores your ICP, sales process, pricing, and writing style as structured memory, so ChatGPT and Codex can use your team's context.\n\nAsk things like \"which deals are stalled in negotiation,\" \"prep me for my 2pm meeting,\" or \"draft follow-ups for every demo this week.\"\n\nConnect an existing Octolane workspace to read, create, update, and delete CRM records and schedule emails, subject to workspace permissions and connected-service access.",
         "developerName": "Octolane",
         "category": "Business & Operations",
         "composerIcon": "./assets/icon.png",
@@ -97,7 +97,7 @@
         }
       },
       "publication": {
-        "release_notes": "Prepare the Octolane AI CRM OAuth package for ChatGPT and Codex, retaining the full existing MCP tool surface. Migration workflows are deferred. Runtime validation and public review are pending."
+        "release_notes": "Prepare the Octolane OAuth package for ChatGPT and Codex, retaining the full existing MCP tool surface. Migration workflows are deferred. Runtime validation and public review are pending."
       }
     }
   }

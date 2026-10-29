@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "octolane": {
+      "type": "streamable-http",
+      "url": "https://mcp.octolane.com/mcp",
+      "extensions": {
+        "com.openai": {
+          "auth": {
+            "type": "oauth",
+            "baseScopes": [
+              "crm:read",
+              "crm:write"
+            ],
+            "defaultScopes": []
+          }
+        }
+      }
+    }
+  }
+}

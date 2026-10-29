@@ -12,7 +12,7 @@ import zipfile
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKAGE = Path('submission/octolane-ai-crm')
+PACKAGE = Path('submission/octolane')
 FILES = {'plugin.json', 'mcp.json', 'assets/logo.png', 'assets/icon.png'}
 GATES = {
     'publisher_verified', 'countries_languages_confirmed', 'listing_urls_verified',
@@ -83,7 +83,7 @@ def validate(root=ROOT, release=False):
             'Unexpected manifest fields')
     require(manifest['$schema'] == 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json',
             'Wrong portable manifest schema')
-    require(manifest['name'] == 'octolane-ai-crm', 'Plugin identity changed')
+    require(manifest['name'] == 'octolane', 'Plugin identity changed')
     require(re.fullmatch(r'\d+\.\d+\.\d+', manifest['version']), 'Expected release SemVer')
     require(not ({'apps', 'interface', 'mcpServers', 'skills'} & manifest.keys()),
             'Legacy fields are not allowed in portable manifest')
@@ -117,9 +117,9 @@ def validate(root=ROOT, release=False):
     for key, file, minimum in [('logo', 'assets/logo.png', 256), ('composerIcon', 'assets/icon.png', 48)]:
         require(ui[key] in (file, './' + file), f'Unexpected asset path: {key}')
         check_png((package / file).read_bytes(), minimum)
-    local = read_json(root / 'plugins/octolane-ai-crm/.codex-plugin/plugin.json')
+    local = read_json(root / 'plugins/octolane/.codex-plugin/plugin.json')
     require(local.get('mcpServers') == './.mcp.json', 'Local MCP reference changed')
-    local_mcp = read_json(root / 'plugins/octolane-ai-crm/.mcp.json')
+    local_mcp = read_json(root / 'plugins/octolane/.mcp.json')
     require(local_mcp == {'mcpServers': {'octolane': {
         'url': 'https://mcp.octolane.com/mcp',
         'bearer_token_env_var': 'OCTOLANE_API_KEY'}}},
@@ -127,21 +127,23 @@ def validate(root=ROOT, release=False):
     marketplace = read_json(root / '.agents/plugins/marketplace.json')
     require(len(marketplace['plugins']) == 1 and marketplace['plugins'][0]['name'] == manifest['name']
             and marketplace['plugins'][0]['source'] == {
-                'source': 'local', 'path': './plugins/octolane-ai-crm'},
+                'source': 'local', 'path': './plugins/octolane'},
             'Local marketplace must retain compatibility package')
     require(local['name'] == manifest['name'] and local['version'] == manifest['version'],
             'Local/public identity or version drift')
     require(local['interface'] == ui, 'Local/public listing drift')
     for file in ('assets/icon.png', 'assets/logo.png'):
-        require((package / file).read_bytes() == (root / 'plugins/octolane-ai-crm' / file).read_bytes(),
+        require((package / file).read_bytes() == (root / 'plugins/octolane' / file).read_bytes(),
                 'Local/public asset drift')
     require(mcp['$schema'] == 'https://agent-plugins.org/schemas/1.0.0/mcp.schema.json',
             'Wrong MCP schema')
     require(set(mcp) == {'$schema', 'mcpServers'} and set(mcp['mcpServers']) == {'octolane'},
             'Unexpected MCP servers or fields')
     server = mcp['mcpServers']['octolane']
-    require(set(server) == {'type', 'url'},
+    require(set(server) == {'type', 'url', 'extensions'},
             'Public MCP config must not contain headers, credentials, or tool filters')
+    require(server.get('extensions') == {'com.openai': {'auth': {'type': 'oauth', 'baseScopes': ['crm:read', 'crm:write'], 'defaultScopes': []}}},
+            'Public MCP config requires read/write OAuth declaration without credentials or overrides')
     require(server['type'] == 'streamable-http' and server['url'] == 'https://mcp.octolane.com/mcp',
             'Unexpected MCP endpoint/transport')
     tools = read_json(root / 'docs/tool-inventory.json')['tools']

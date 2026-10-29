@@ -29,6 +29,7 @@ class PackageTests(unittest.TestCase):
     def test_draft_is_deterministic_and_contains_only_public_files(self):
         (self.root / '.env').write_text('PRIVATE_TEST_SENTINEL')
         target, missing, pending = package.build(self.root, draft=True)
+        self.assertEqual(target.name, 'octolane-0.2.0-draft.zip')
         first = target.read_bytes()
         package.build(self.root, draft=True)
         self.assertEqual(first, target.read_bytes())
@@ -38,6 +39,7 @@ class PackageTests(unittest.TestCase):
             self.assertEqual(set(archive.namelist()), package.FILES)
             self.assertNotIn(b'PRIVATE_TEST_SENTINEL', b''.join(archive.read(n) for n in archive.namelist()))
             self.assertNotIn('.mcp.json', archive.namelist())
+            self.assertEqual(json.loads(archive.read('plugin.json'))['name'], 'octolane')
 
     def test_release_refuses_unverified_runtime(self):
         with self.assertRaisesRegex(ValueError, 'Release blocked'):
@@ -61,7 +63,7 @@ class PackageTests(unittest.TestCase):
     def test_symlink_rejected(self):
         image = self.source / 'assets/logo.png'
         image.unlink()
-        image.symlink_to(self.root / 'plugins/octolane-ai-crm/assets/logo.png')
+        image.symlink_to(self.root / 'plugins/octolane/assets/logo.png')
         with self.assertRaisesRegex(ValueError, 'Symlinks'):
             package.validate(self.root)
 
@@ -94,7 +96,7 @@ class PackageTests(unittest.TestCase):
             package.validate(self.root)
 
     def test_listing_drift_rejected(self):
-        self.edit(self.root / 'plugins/octolane-ai-crm/.codex-plugin/plugin.json', lambda d: d['interface'].update({'displayName': 'Different'}))
+        self.edit(self.root / 'plugins/octolane/.codex-plugin/plugin.json', lambda d: d['interface'].update({'displayName': 'Different'}))
         with self.assertRaisesRegex(ValueError, 'listing drift'):
             package.validate(self.root)
 
@@ -105,12 +107,12 @@ class PackageTests(unittest.TestCase):
 
     def test_local_marketplace_cannot_switch_to_public_package(self):
         self.edit(self.root / '.agents/plugins/marketplace.json', lambda d:
-                  d['plugins'][0]['source'].update({'path': './submission/octolane-ai-crm'}))
+                  d['plugins'][0]['source'].update({'path': './submission/octolane'}))
         with self.assertRaisesRegex(ValueError, 'Local marketplace'):
             package.validate(self.root)
 
     def test_local_key_uses_native_bearer_environment_binding(self):
-        path = self.root / 'plugins/octolane-ai-crm/.mcp.json'
+        path = self.root / 'plugins/octolane/.mcp.json'
         server = json.loads(path.read_text())['mcpServers']['octolane']
         self.assertEqual(server.get('bearer_token_env_var'), 'OCTOLANE_API_KEY')
         self.assertNotIn('headers', server)
