@@ -1,70 +1,71 @@
-# Octolane AI CRM Codex Plugin
+# Octolane plugin
 
-This repository is a Codex plugin marketplace for Octolane AI CRM. It publishes the `octolane-ai-crm` plugin, which connects Codex to Octolane's hosted MCP server.
+Plugin packaging for Octolane's hosted MCP server. Version 0.2.0 is published in the ChatGPT plugin directory while preserving the existing local Codex marketplace installation.
 
-## Install
+The release target is all 72 existing MCP tools for subscribed Octolane customers, subject to workspace permissions and connected-service access. This repository does not implement, proxy, or filter the tools. The MCP server owns discovery and execution. Migration workflows are deferred to iteration two.
 
-Add this marketplace to Codex:
+**Status: 0.2.0 published on 29 October 2026.** [Open Octolane](https://chatgpt.com/plugins/plugin_asdk_app_6ae0e3639950819189e52b37939d9d52). See the [release record](docs/releases/0.2.0.md), [changelog](CHANGELOG.md) and [release procedure](docs/release-procedure.md). Publication does not certify every proposed runtime/security test in the historical local checklist.
 
-```bash
-codex plugin marketplace add octolane/codex-plugin
-```
+Start with the [local end-to-end testing guide](docs/local-testing.md). See [official branding and screenshot evidence](docs/branding.md) for the updated icons.
 
-Then open Codex, go to Plugins, find `Octolane AI CRM`, and install it.
+## Public package (OAuth)
 
-If you are installing from a local checkout while testing:
+Source: `submission/octolane/`.
 
-```bash
-codex plugin marketplace add /path/to/codex-plugin
-```
+- Portable Agent Plugins 1.0 `plugin.json` with listing metadata and five positive/three negative review scenarios.
+- `mcp.json` connects to `https://mcp.octolane.com/mcp` using streamable HTTP. OAuth settings are discovered from the protected server; its metadata advertises DCR and `crm:read`/`crm:write`.
+- Discovery supplies authorization, token and registration endpoints. No client ID, secret, fixed headers or tool allowlist is packaged.
+- Users enter the desired workspace's MCP API key on Octolane's hosted authorization page. Never paste keys into chat. The owner demonstrated a working connection for review. This does not establish exhaustive host compatibility; a manifest declaration does not register a client or grant access.
 
-## Authentication
-
-Generate an Octolane API key from the Octolane dashboard under Settings > Integrations > API, then expose it to Codex as `OCTOLANE_API_KEY`.
+Run locally with Python 3.10+. Packaging uses the standard library; schema checks/tests use the pinned development dependency:
 
 ```bash
-export OCTOLANE_API_KEY="your_octolane_api_key"
+python3 -m pip install -r requirements-dev.txt
+python3 scripts/validate_schemas.py
+python3 scripts/package_plugin.py validate
+python3 -m unittest discover -s tests -v
+python3 scripts/package_plugin.py build --draft
+python3 scripts/validate_schemas.py --zip dist/octolane-0.2.0-draft.zip
 ```
 
-The plugin sends this key to Octolane MCP using the `X-API-Key` header.
+The `--draft` filename is the original upload-artifact convention, not the current portal status. This command reproduces the published upload bytes; see the release record for the checksum. The ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. Validation checks the published Agent Plugins base/transport schemas plus the documented OpenAI OAuth profile. The full MCP document does not pass the generic schema because it rejects the OpenAI extension; see [schema validation limits](schemas/README.md). Passing these checks is not portal acceptance or runtime approval.
 
-## Capabilities
-
-The plugin enables Codex to use Octolane MCP for pipeline reviews, deal search and updates, contact and account lookup, task management, meeting prep, and Signal website visitor intelligence.
-
-Example prompts:
-
-- Show my Octolane pipeline overview.
-- Find stale deals in Octolane.
-- Prepare me for my next sales call.
-
-## Repository Layout
-
-```text
-.agents/plugins/marketplace.json
-plugins/octolane-ai-crm/.codex-plugin/plugin.json
-plugins/octolane-ai-crm/.mcp.json
-README.md
-LICENSE
-```
-
-## Validate
-
-From the repository root:
+A release build requires verified evidence in `docs/release-gates.json` and complete listing/review fields:
 
 ```bash
-python3 /path/to/plugin-creator/scripts/validate_plugin.py plugins/octolane-ai-crm
-python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
-python3 -m json.tool plugins/octolane-ai-crm/.codex-plugin/plugin.json >/dev/null
-python3 -m json.tool plugins/octolane-ai-crm/.mcp.json >/dev/null
+python3 scripts/package_plugin.py validate --release
+python3 scripts/package_plugin.py build
 ```
 
-## Marketplace Metadata
+These stricter local commands intentionally still fail: the demo URL was supplied in the portal rather than the immutable upload, and exhaustive runtime evidence is not recorded locally. Do not mark gates passed merely to produce a release archive. Builds never upload, register, submit or publish anything.
 
-- Marketplace name: `octolane`
-- Marketplace display name: `Octolane`
-- Plugin name: `octolane-ai-crm`
-- Plugin display name: `Octolane AI CRM`
-- Category: `CRM`
-- Installation policy: `AVAILABLE`
-- Authentication policy: `ON_INSTALL`
+## Existing local Codex installation (API key)
+
+Add the repository marketplace:
+
+```bash
+codex plugin marketplace add octolane-org/codex-plugin
+```
+
+Then install **Octolane** from Codex Plugins. For local development:
+
+```bash
+codex plugin marketplace add /absolute/path/to/codex-plugin
+```
+
+The marketplace still points to `plugins/octolane/`. That compatibility package uses the native `bearer_token_env_var: "OCTOLANE_API_KEY"` binding to send `Authorization: Bearer <key>`. Configure the variable privately in the Codex environment using the key from the desired Octolane workspace; do not commit or share its value. The existing local install route was preserved but not reinstalled during this change.
+
+Do not upload this local package to the public directory. Use the dedicated OAuth source and build command above. Identity, version, listing fields and assets are checked for consistency across the two packages; authentication intentionally differs.
+
+## Files
+
+- `.agents/plugins/marketplace.json`: local Codex marketplace.
+- `plugins/octolane/`: existing local API-key compatibility package.
+- `submission/octolane/`: OAuth public-package source.
+- `scripts/package_plugin.py`: offline validation and deterministic archive build.
+- `tests/test_package.py`: archive isolation, metadata, assets and release-gate regression checks.
+- `docs/tool-inventory.{json,md}`: 72-tool static baseline, not a live discovery result.
+- `docs/reviewer-walkthrough.md`: synthetic fixtures, recording plan and evidence requirements.
+- `docs/backend-followups.md`: separately scoped backend work.
+
+Setup instructions: [Octolane MCP](https://mcp.octolane.com/). The landing page documents OAuth, workspace keys and the endpoint `https://mcp.octolane.com/mcp`. Do not use the old documentation guide links pending repair. Octolane website: [Octolane](https://www.octolane.com/). Public package requirements: [OpenAI submission guide](https://developers.openai.com/plugins/deploy/submission).

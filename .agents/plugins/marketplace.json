@@ -5,16 +5,16 @@
   },
   "plugins": [
     {
-      "name": "octolane-ai-crm",
+      "name": "octolane",
       "source": {
         "source": "local",
-        "path": "./plugins/octolane-ai-crm"
+        "path": "./plugins/octolane"
       },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
       },
-      "category": "CRM"
+      "category": "Business & Operations"
     }
   ]
 }
