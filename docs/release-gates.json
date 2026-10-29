@@ -44,5 +44,12 @@
       "status": "pending",
       "evidence": ""
     }
+  },
+  "publication": {
+    "version": "0.2.0",
+    "status": "published",
+    "observed_at": "2026-10-29T17:49:39Z",
+    "evidence": "docs/releases/0.2.0.md",
+    "upload_sha256": "5fd73ccc288d0f6284d2ed9cd309c354b54be4d57d28b0a6bdb02b11d8cb5339"
   }
 }
