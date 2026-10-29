@@ -1,3 +1,5 @@
+> Historical pre-publication record. Current release: [0.2.0, published 29 October 2026](releases/0.2.0.md). Unverified tests below are not retroactively marked passed.
+
 # Current release checkpoint — 23 October 2026
 
 **Review draft, not submission-ready.** Backend changes are in [PR #4649](https://github.com/octolane-org/octolane-backend/pull/4649). The separate plugin package is published in [PR #1](https://github.com/octolane-org/codex-plugin/pull/1) against main; its initial package CI passed. Neither repository is deployed or submitted by this task. Historical audit documents are retained as evidence and are superseded by this checkpoint.

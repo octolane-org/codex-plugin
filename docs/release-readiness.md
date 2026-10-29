@@ -1,3 +1,5 @@
+> Historical pre-publication record. Current release: [0.2.0, published 29 October 2026](releases/0.2.0.md). Unverified tests below are not retroactively marked passed.
+
 > Historical audit snapshot. For current OAuth behavior, publication state and remaining gates, see [local readiness](local-readiness-checkpoint.md). Earlier no-refresh findings below describe the audited baseline, not the revised PR.
 
 # OCT-4270: ChatGPT/Codex release readiness

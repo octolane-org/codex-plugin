@@ -1,4 +1,6 @@
-# Test Octolane locally before publication
+# Test Octolane locally
+
+> The 0.2.0 package is now published; see [release evidence](releases/0.2.0.md). This is a reusable test plan, not a claim that every scenario ran. Historical backend refresh descriptions below are not guarantees of the published service.
 
 Use your existing Mac mini checkout and normal Codex/ChatGPT accounts. Do not
 create a disposable account, alternate CODEX_HOME or throwaway CRM workspace.

@@ -1,10 +1,10 @@
 # Octolane plugin
 
-Plugin packaging for Octolane's hosted MCP server. Version 0.2.0 prepares a ChatGPT/Codex public-directory package while preserving the existing local Codex marketplace installation.
+Plugin packaging for Octolane's hosted MCP server. Version 0.2.0 is published in the ChatGPT plugin directory while preserving the existing local Codex marketplace installation.
 
 The release target is all 72 existing MCP tools for subscribed Octolane customers, subject to workspace permissions and connected-service access. This repository does not implement, proxy, or filter the tools. The MCP server owns discovery and execution. Migration workflows are deferred to iteration two.
 
-**Status: draft package; offline validation is not submission approval.** The local release ledger remains unverified and does not reflect live portal state. See the [historical readiness checkpoint](docs/local-readiness-checkpoint.md) and [release procedure](docs/release-procedure.md).
+**Status: 0.2.0 published on 29 October 2026.** [Open Octolane](https://chatgpt.com/plugins/plugin_asdk_app_6ae0e3639950819189e52b37939d9d52). See the [release record](docs/releases/0.2.0.md), [changelog](CHANGELOG.md) and [release procedure](docs/release-procedure.md). Publication does not certify every proposed runtime/security test in the historical local checklist.
 
 Start with the [local end-to-end testing guide](docs/local-testing.md). See [official branding and screenshot evidence](docs/branding.md) for the updated icons.
 
@@ -15,7 +15,7 @@ Source: `submission/octolane/`.
 - Portable Agent Plugins 1.0 `plugin.json` with listing metadata and five positive/three negative review scenarios.
 - `mcp.json` connects to `https://mcp.octolane.com/mcp` using streamable HTTP. OAuth settings are discovered from the protected server; its metadata advertises DCR and `crm:read`/`crm:write`.
 - Discovery supplies authorization, token and registration endpoints. No client ID, secret, fixed headers or tool allowlist is packaged.
-- Users enter the desired workspace's MCP API key on Octolane's hosted authorization page. Never paste keys into chat. End-to-end compatibility is pending; a manifest declaration does not register a client or grant access.
+- Users enter the desired workspace's MCP API key on Octolane's hosted authorization page. Never paste keys into chat. The owner demonstrated a working connection for review. This does not establish exhaustive host compatibility; a manifest declaration does not register a client or grant access.
 
 Run locally with Python 3.10+. Packaging uses the standard library; schema checks/tests use the pinned development dependency:
 
@@ -28,7 +28,7 @@ python3 scripts/package_plugin.py build --draft
 python3 scripts/validate_schemas.py --zip dist/octolane-0.2.0-draft.zip
 ```
 
-The draft ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. Validation checks the published Agent Plugins base/transport schemas plus the documented OpenAI OAuth profile. The full MCP document does not pass the generic schema because it rejects the OpenAI extension; see [schema validation limits](schemas/README.md). Passing these checks is not portal acceptance or runtime approval.
+The `--draft` filename is the original upload-artifact convention, not the current portal status. This command reproduces the published upload bytes; see the release record for the checksum. The ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. Validation checks the published Agent Plugins base/transport schemas plus the documented OpenAI OAuth profile. The full MCP document does not pass the generic schema because it rejects the OpenAI extension; see [schema validation limits](schemas/README.md). Passing these checks is not portal acceptance or runtime approval.
 
 A release build requires verified evidence in `docs/release-gates.json` and complete listing/review fields:
 
@@ -37,7 +37,7 @@ python3 scripts/package_plugin.py validate --release
 python3 scripts/package_plugin.py build
 ```
 
-These commands intentionally fail while readiness gaps remain. Do not mark gates passed merely to produce a release archive. Builds never upload, register, submit or publish anything.
+These stricter local commands intentionally still fail: the demo URL was supplied in the portal rather than the immutable upload, and exhaustive runtime evidence is not recorded locally. Do not mark gates passed merely to produce a release archive. Builds never upload, register, submit or publish anything.
 
 ## Existing local Codex installation (API key)
 
