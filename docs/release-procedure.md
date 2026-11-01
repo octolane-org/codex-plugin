@@ -2,11 +2,11 @@
 
 ## Current release: 0.2.0
 
-Octolane 0.2.0 was published on 29 October 2026. The [release record](releases/0.2.0.md) is the source of truth for upload provenance, checksum, observed portal state and evidence limits. [CHANGELOG.md](../CHANGELOG.md) records package release chronology. Keep both manifests at 0.2.0 when merging this documentation reconciliation.
+Octolane 0.2.0 was published on 29 October 2026. The [release record](releases/0.2.0.md) is the source of truth for upload provenance, checksum, observed portal state and evidence limits. [CHANGELOG.md](../CHANGELOG.md) records package release chronology. Current sources prepare the unpublished [0.2.1 icon candidate](releases/0.2.1-candidate.md); both manifests move together.
 
-The public source declares OAuth through `extensions.com.openai.auth`, with `baseScopes: [crm:read, crm:write]` and `defaultScopes: []`. It contains no credentials, fixed headers or private App binding. The local Codex package separately uses `bearer_token_env_var: OCTOLANE_API_KEY`. Both use the production MCP URL, official 528px icons and the subtitle “Revenue Superintelligence”. No skills ship in 0.2.0.
+The public source declares OAuth through `extensions.com.openai.auth`, with `baseScopes: [crm:read, crm:write]` and `defaultScopes: []`. It contains no credentials, fixed headers or private App binding. The local Codex package separately uses `bearer_token_env_var: OCTOLANE_API_KEY`. Published 0.2.0 used the production MCP URL, official 528px icons and the subtitle “Revenue Superintelligence”. No skills ship in 0.2.0.
 
-## Offline verification and exact reproduction
+## Offline candidate verification
 
 ```sh
 python3 -m pip install -r requirements-dev.txt
@@ -14,11 +14,11 @@ python3 scripts/validate_schemas.py
 python3 scripts/package_plugin.py validate
 python3 -m unittest discover -s tests -v
 python3 scripts/package_plugin.py build --draft
-python3 scripts/validate_schemas.py --zip dist/octolane-0.2.0-draft.zip
-shasum -a 256 dist/octolane-0.2.0-draft.zip
+python3 scripts/validate_schemas.py --zip dist/octolane-0.2.1-draft.zip
+shasum -a 256 dist/octolane-0.2.1-draft.zip
 ```
 
-Expected checksum: `5fd73ccc288d0f6284d2ed9cd309c354b54be4d57d28b0a6bdb02b11d8cb5339`. Build twice to check determinism. The archive contains only the two manifests and two icons. Its historical `-draft` filename is independent of publication status.
+Candidate checksum: see the 0.2.1 candidate record. Build twice to check determinism. The archive contains only the two manifests and two icons. For exact 0.2.0 reproduction, first check out its recorded source revision in a separate checkout; do not rebuild old versions from current sources.
 
 Validation uses the published base/transport schemas plus the documented OpenAI OAuth profile; see [schema limits](../schemas/README.md). Static success does not prove runtime behavior.
 

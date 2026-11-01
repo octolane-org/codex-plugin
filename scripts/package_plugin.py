@@ -13,7 +13,7 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = Path('submission/octolane')
-FILES = {'plugin.json', 'mcp.json', 'assets/logo.png', 'assets/icon.png'}
+FILES = {'plugin.json', 'mcp.json', 'assets/logo.png', 'assets/logo-dark.png'}
 GATES = {
     'publisher_verified', 'countries_languages_confirmed', 'listing_urls_verified',
     'privacy_coverage_approved', 'oauth_runtime_passed', 'live_72_tool_contracts_passed',
@@ -91,7 +91,7 @@ def validate(root=ROOT, release=False):
     require(set(ext) <= {'interface', 'review', 'publication'}, 'Unexpected OpenAI extension')
     ui = ext['interface']
     require(set(ui) <= {'displayName', 'shortDescription', 'longDescription', 'developerName',
-                        'category', 'composerIcon', 'logo', 'capabilities', 'websiteURL',
+                        'category', 'composerIcon', 'logo', 'logoDark', 'composerIconDark', 'capabilities', 'websiteURL',
                         'supportURL', 'privacyPolicyURL', 'termsOfServiceURL', 'brandColor',
                         'defaultPrompt'}, 'Unexpected listing fields')
     require(set(ext['review']) <= {'test_cases', 'demo_recording_url'},
@@ -114,7 +114,10 @@ def validate(root=ROOT, release=False):
             missing.append(key)
         else:
             https(ui[key])
-    for key, file, minimum in [('logo', 'assets/logo.png', 256), ('composerIcon', 'assets/icon.png', 48)]:
+    for key, file, minimum in [('logo', 'assets/logo.png', 256),
+                               ('composerIcon', 'assets/logo.png', 48),
+                               ('logoDark', 'assets/logo-dark.png', 256),
+                               ('composerIconDark', 'assets/logo-dark.png', 48)]:
         require(ui[key] in (file, './' + file), f'Unexpected asset path: {key}')
         check_png((package / file).read_bytes(), minimum)
     local = read_json(root / 'plugins/octolane/.codex-plugin/plugin.json')
@@ -132,7 +135,7 @@ def validate(root=ROOT, release=False):
     require(local['name'] == manifest['name'] and local['version'] == manifest['version'],
             'Local/public identity or version drift')
     require(local['interface'] == ui, 'Local/public listing drift')
-    for file in ('assets/icon.png', 'assets/logo.png'):
+    for file in ('assets/logo-dark.png', 'assets/logo.png'):
         require((package / file).read_bytes() == (root / 'plugins/octolane' / file).read_bytes(),
                 'Local/public asset drift')
     require(mcp['$schema'] == 'https://agent-plugins.org/schemas/1.0.0/mcp.schema.json',

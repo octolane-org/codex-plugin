@@ -1,6 +1,6 @@
 {
   "name": "octolane",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Revenue superintelligence built for modern sales and go-to-market teams.",
   "author": {
     "name": "Octolane",
@@ -24,7 +24,7 @@
     "longDescription": "Revenue superintelligence built for modern sales and go-to-market teams. Connect Octolane to ChatGPT and Codex to read and manage your revenue workflow.\n\nPipeline & deal management: Search deals, get full deal details, create new opportunities, move deals through pipeline stages, and get instant pipeline overviews with deal counts and total values. Create and customize sales pipelines, stages, and custom fields on the fly.\n\nContacts & accounts: Search, create, update, and enrich contacts and companies by name, email, domain, industry, or job title. Bulk create up to 50 records or update up to 25 records in one request.\n\nEmail & meetings: Search email threads with any contact or account, schedule emails for future delivery via your connected Gmail, and pull full meeting transcripts and attendee lists to prep for calls or write follow-ups.\n\nTasks, notes & activities: Create tasks linked to deals, contacts, or accounts; log calls, meetings, and LinkedIn touches; and keep notes attached to the right records.\n\nWebsite visitor intelligence: Identify companies visiting your website with Octolane Signal and turn anonymous traffic into pipeline.\n\nAI memory: Octolane stores your ICP, sales process, pricing, and writing style as structured memory, so ChatGPT and Codex can use your team's context.\n\nAsk things like \"which deals are stalled in negotiation,\" \"prep me for my 2pm meeting,\" or \"draft follow-ups for every demo this week.\"\n\nConnect an existing Octolane workspace to read, create, update, and delete CRM records and schedule emails, subject to workspace permissions and connected-service access.",
     "developerName": "Octolane",
     "category": "Business & Operations",
-    "composerIcon": "./assets/icon.png",
+    "composerIcon": "./assets/logo.png",
     "logo": "./assets/logo.png",
     "capabilities": [
       "MCP",
@@ -42,6 +42,8 @@
       "Find stale deals in Octolane.",
       "Prepare me for my next sales call."
     ],
-    "supportURL": "https://octolane.com/docs/support/contact"
+    "supportURL": "https://octolane.com/docs/support/contact",
+    "logoDark": "./assets/logo-dark.png",
+    "composerIconDark": "./assets/logo-dark.png"
   }
 }

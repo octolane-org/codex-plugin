@@ -5,7 +5,7 @@ Unmodified schema responses downloaded on 21 October 2026 Pacific:
 - https://agent-plugins.org/schemas/1.0.0/plugin.schema.json
 - https://agent-plugins.org/schemas/1.0.0/mcp.schema.json
 
-Run `python3 scripts/validate_schemas.py` with `requirements-dev.txt` installed. Pass `--zip dist/octolane-0.2.0-draft.zip` to validate the actual archive manifests as well.
+Run `python3 scripts/validate_schemas.py` with `requirements-dev.txt` installed. Pass `--zip dist/octolane-0.2.1-draft.zip` to validate the actual archive manifests as well.
 
 These schemas constrain portable metadata and transport. `plugin.json` extension objects are opaque to the generic schema, so passing does not validate every OpenAI listing/review requirement. Repository checks cover selected OpenAI constraints; portal validation remains a release gate.
 
