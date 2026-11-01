@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — unpublished candidate, 2026-11-01
+
+- Replace the inset rounded icon with Vitor’s supplied 1024px square PNGs.
+- Share logo/composer assets and add matching dark-theme fields in both packages.
+- Preserve OAuth/API-key configuration and the immutable 0.2.0 artifact.
+- Enforce the exact four-file candidate inventory, dark-image parity and safe paths.
+
+See [candidate checks and remaining gates](docs/releases/0.2.1-candidate.md).
+
 ## 0.2.0 — 2026-10-29
 
 Published as **Octolane — Revenue Superintelligence** in the ChatGPT plugin directory.

@@ -1,4 +1,18 @@
-# Official brand assets — 23 October 2026
+# Current icon candidate — 1 November 2026
+
+Vitor supplied `octolane-chatgpt-icon 2.zip` in the [design thread](https://octolane.slack.com/archives/C08AM411HKR/p1793402648407869), file `F0CE1FN1XGC`, reply `1793547906.365989`.
+Both PNGs are copied unmodified into both packages. They are opaque RGB, 1024×1024:
+
+- `logo.png`: white mark on #202020, 22,501 bytes; SHA-256 `b7e4bd5e5d1019b96f9a9c222f9deeca658c737eb2c3bd8592799f480ebe6017`.
+- `logo-dark.png`: #202020 mark on white, 22,520 bytes; SHA-256 `630ed37f7d804408b58c3f69ef2517cc26744d132b2e6e4b9d296e798a3604ba`.
+
+As requested, `logo` and `composerIcon` share logo.png; `logoDark` and `composerIconDark` share logo-dark.png. The [official submission documentation](https://developers.openai.com/plugins/deploy/submission), checked 1 November 2026, documents both dark fields for portable and compatibility manifests. No SVGs or macOS metadata are packaged. The exact four-file inventory replaces old icon.png with logo-dark.png.
+
+[Local size sheet](screenshots/icons-0.2.1-local-sizes.png) shows actual PNG pixels resampled with Pillow Lanczos at 16/24/48/96/128px. Both marks remain recognizable with reduced detail at 16px. This is a **local simulated rendering, not installed ChatGPT/Codex UI evidence**. Host masking/theme selection still needs an authorized host check. No recording is necessary for these static assets.
+
+## Historical 0.2.0 branding
+
+### Official brand assets — 23 October 2026
 
 Source: [Octolane brand guidelines](https://www.octolane.com/brand).
 The five public ZIP downloads (combined, wordmark, logo, mark, icon) and the

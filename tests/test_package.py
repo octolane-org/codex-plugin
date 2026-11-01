@@ -29,7 +29,7 @@ class PackageTests(unittest.TestCase):
     def test_draft_is_deterministic_and_contains_only_public_files(self):
         (self.root / '.env').write_text('PRIVATE_TEST_SENTINEL')
         target, missing, pending = package.build(self.root, draft=True)
-        self.assertEqual(target.name, 'octolane-0.2.0-draft.zip')
+        self.assertEqual(target.name, 'octolane-0.2.1-draft.zip')
         first = target.read_bytes()
         package.build(self.root, draft=True)
         self.assertEqual(first, target.read_bytes())
@@ -40,6 +40,55 @@ class PackageTests(unittest.TestCase):
             self.assertNotIn(b'PRIVATE_TEST_SENTINEL', b''.join(archive.read(n) for n in archive.namelist()))
             self.assertNotIn('.mcp.json', archive.namelist())
             self.assertEqual(json.loads(archive.read('plugin.json'))['name'], 'octolane')
+
+    def test_light_and_dark_slots_share_the_expected_archive_assets(self):
+        target, _, _ = package.build(self.root, draft=True)
+        with zipfile.ZipFile(target) as archive:
+            self.assertEqual(set(archive.namelist()), {
+                'plugin.json', 'mcp.json', 'assets/logo.png', 'assets/logo-dark.png'})
+            ui = json.loads(archive.read('plugin.json'))['extensions']['com.openai']['interface']
+            for key, name in [('logo', 'logo.png'), ('composerIcon', 'logo.png'),
+                              ('logoDark', 'logo-dark.png'), ('composerIconDark', 'logo-dark.png')]:
+                self.assertEqual(ui[key], './assets/' + name)
+                self.assertEqual(archive.read('assets/' + name),
+                                 (self.root / 'plugins/octolane/assets' / name).read_bytes())
+
+    def test_dark_asset_is_required_and_must_be_valid(self):
+        path = self.source / 'assets/logo-dark.png'
+        original = path.read_bytes()
+        path.unlink()
+        with self.assertRaisesRegex(ValueError, 'package files'):
+            package.build(self.root, draft=True)
+        path.write_bytes(b'not a PNG')
+        with self.assertRaisesRegex(ValueError, 'PNG'):
+            package.validate(self.root)
+        path.write_bytes(original)
+        local = self.root / 'plugins/octolane/assets/logo-dark.png'
+        local.write_bytes((self.source / 'assets/logo.png').read_bytes())
+        with self.assertRaisesRegex(ValueError, 'asset drift'):
+            package.validate(self.root)
+
+    def test_dark_paths_cannot_escape_or_reference_other_assets(self):
+        path = self.source / 'plugin.json'
+        original = path.read_text()
+        for key in ('logoDark', 'composerIconDark'):
+            for value in ('../logo-dark.png', '/tmp/logo-dark.png', './assets/logo.png',
+                          'https://example.com/logo.png'):
+                with self.subTest(key=key, value=value):
+                    self.edit(path, lambda d: d['extensions']['com.openai']['interface'].update({key: value}))
+                    with self.assertRaisesRegex(ValueError, 'Unexpected asset path'):
+                        package.validate(self.root)
+                    path.write_text(original)
+
+    def test_source_and_macos_junk_are_rejected(self):
+        for name in ('assets/logo.svg', 'assets/icon.png', '.DS_Store', '__MACOSX/._logo.png'):
+            with self.subTest(name=name):
+                path = self.source / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_text('unwanted')
+                with self.assertRaisesRegex(ValueError, 'package files'):
+                    package.build(self.root, draft=True)
+                path.unlink()
 
     def test_release_refuses_unverified_runtime(self):
         with self.assertRaisesRegex(ValueError, 'Release blocked'):

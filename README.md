@@ -6,6 +6,8 @@ The release target is all 72 existing MCP tools for subscribed Octolane customer
 
 **Status: 0.2.0 published on 29 October 2026.** [Open Octolane](https://chatgpt.com/plugins/plugin_asdk_app_6ae0e3639950819189e52b37939d9d52). See the [release record](docs/releases/0.2.0.md), [changelog](CHANGELOG.md) and [release procedure](docs/release-procedure.md). Publication does not certify every proposed runtime/security test in the historical local checklist.
 
+The current source prepares **0.2.1, an unpublished icon-update candidate**. See [candidate evidence](docs/releases/0.2.1-candidate.md).
+
 Start with the [local end-to-end testing guide](docs/local-testing.md). See [official branding and screenshot evidence](docs/branding.md) for the updated icons.
 
 ## Public package (OAuth)
@@ -25,10 +27,10 @@ python3 scripts/validate_schemas.py
 python3 scripts/package_plugin.py validate
 python3 -m unittest discover -s tests -v
 python3 scripts/package_plugin.py build --draft
-python3 scripts/validate_schemas.py --zip dist/octolane-0.2.0-draft.zip
+python3 scripts/validate_schemas.py --zip dist/octolane-0.2.1-draft.zip
 ```
 
-The `--draft` filename is the original upload-artifact convention, not the current portal status. This command reproduces the published upload bytes; see the release record for the checksum. The ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. Validation checks the published Agent Plugins base/transport schemas plus the documented OpenAI OAuth profile. The full MCP document does not pass the generic schema because it rejects the OpenAI extension; see [schema validation limits](schemas/README.md). Passing these checks is not portal acceptance or runtime approval.
+The `--draft` filename explicitly labels the unpublished 0.2.1 candidate. To reproduce published 0.2.0, use its recorded source revision and checksum in the release record. The ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. Validation checks the published Agent Plugins base/transport schemas plus the documented OpenAI OAuth profile. The full MCP document does not pass the generic schema because it rejects the OpenAI extension; see [schema validation limits](schemas/README.md). Passing these checks is not portal acceptance or runtime approval.
 
 A release build requires verified evidence in `docs/release-gates.json` and complete listing/review fields:
 
