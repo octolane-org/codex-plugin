@@ -1,0 +1,11 @@
+interface:
+  display_name: "Get Started"
+  short_description: "Connect Octolane and run your first task"
+  default_prompt: "Check that Octolane is connected and show me what it can do."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

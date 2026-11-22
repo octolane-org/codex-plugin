@@ -1,0 +1,11 @@
+interface:
+  display_name: "Log Activity"
+  short_description: "Log calls and chats Octolane can't see"
+  default_prompt: "Log a call I just had and set the follow-up."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

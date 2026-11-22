@@ -1,0 +1,11 @@
+interface:
+  display_name: "Teach Octolane"
+  short_description: "Save your ICP, pricing and writing style"
+  default_prompt: "Learn my writing style from my sent emails and save it."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

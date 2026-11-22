@@ -6,7 +6,7 @@ The release target is all 72 existing MCP tools for subscribed Octolane customer
 
 **Status: 0.2.0 published on 29 October 2026.** [Open Octolane](https://chatgpt.com/plugins/plugin_asdk_app_6ae0e3639950819189e52b37939d9d52). See the [release record](docs/releases/0.2.0.md), [changelog](CHANGELOG.md) and [release procedure](docs/release-procedure.md). Publication does not certify every proposed runtime/security test in the historical local checklist.
 
-The current source prepares **0.2.1, an unpublished icon-update candidate**. See [candidate evidence](docs/releases/0.2.1-candidate.md).
+The current source prepares **1.0.0, an unpublished candidate with 17 skills**. See [candidate evidence](docs/releases/1.0.0-candidate.md). The earlier [0.2.1 icon candidate](docs/releases/0.2.1-candidate.md) is its base.
 
 Start with the [local end-to-end testing guide](docs/local-testing.md). See [official branding and screenshot evidence](docs/branding.md) for the updated icons.
 
@@ -15,6 +15,7 @@ Start with the [local end-to-end testing guide](docs/local-testing.md). See [off
 Source: `submission/octolane/`.
 
 - Portable Agent Plugins 1.0 `plugin.json` with listing metadata and five positive/three negative review scenarios.
+- 17 skills in `skills/<name>/`, each a `SKILL.md` and an `agents/openai.yaml` that depends on the Octolane MCP server, plus the PNG logos and SVG composer icons in `assets/`. The validator pins the skill list, the frontmatter, the dependency file and the SVGs.
 - `mcp.json` connects to `https://mcp.octolane.com/mcp` using streamable HTTP. OAuth settings are discovered from the protected server; its metadata advertises DCR and `crm:read`/`crm:write`.
 - Discovery supplies authorization, token and registration endpoints. No client ID, secret, fixed headers or tool allowlist is packaged.
 - Users enter the desired workspace's MCP API key on Octolane's hosted authorization page. Never paste keys into chat. The owner demonstrated a working connection for review. This does not establish exhaustive host compatibility; a manifest declaration does not register a client or grant access.
@@ -27,10 +28,10 @@ python3 scripts/validate_schemas.py
 python3 scripts/package_plugin.py validate
 python3 -m unittest discover -s tests -v
 python3 scripts/package_plugin.py build --draft
-python3 scripts/validate_schemas.py --zip dist/octolane-0.2.1-draft.zip
+python3 scripts/validate_schemas.py --zip dist/octolane-1.0.0-draft.zip
 ```
 
-The `--draft` filename explicitly labels the unpublished 0.2.1 candidate. To reproduce published 0.2.0, use its recorded source revision and checksum in the release record. The ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. Validation checks the published Agent Plugins base/transport schemas plus the documented OpenAI OAuth profile. The full MCP document does not pass the generic schema because it rejects the OpenAI extension; see [schema validation limits](schemas/README.md). Passing these checks is not portal acceptance or runtime approval.
+The `--draft` filename explicitly labels the unpublished 1.0.0 candidate. To reproduce published 0.2.0, use its recorded source revision and checksum in the release record. The ZIP and SHA-256 file are written to ignored `dist/`. The ZIP contains one plugin at its root. The build reopens and verifies the archive; timestamps and file order are deterministic. Validation checks the published Agent Plugins base/transport schemas plus the documented OpenAI OAuth profile. The full MCP document does not pass the generic schema because it rejects the OpenAI extension; see [schema validation limits](schemas/README.md). Passing these checks is not portal acceptance or runtime approval.
 
 A release build requires verified evidence in `docs/release-gates.json` and complete listing/review fields:
 

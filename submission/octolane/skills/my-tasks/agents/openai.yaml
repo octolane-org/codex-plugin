@@ -1,0 +1,11 @@
+interface:
+  display_name: "My Tasks"
+  short_description: "See what you owe and who's waiting"
+  default_prompt: "What follow-ups do I owe people this week?"
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

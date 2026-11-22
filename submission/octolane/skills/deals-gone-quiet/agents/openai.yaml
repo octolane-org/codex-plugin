@@ -1,0 +1,11 @@
+interface:
+  display_name: "Deals Gone Quiet"
+  short_description: "Find stalled deals and re-engage them"
+  default_prompt: "Which deals have gone quiet, and how do I re-engage them?"
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

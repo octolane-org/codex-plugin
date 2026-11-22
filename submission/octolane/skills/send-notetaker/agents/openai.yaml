@@ -1,0 +1,11 @@
+interface:
+  display_name: "Send Notetaker"
+  short_description: "Record a meeting onto the right deal"
+  default_prompt: "Send the notetaker to my next customer call."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

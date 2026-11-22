@@ -1,0 +1,11 @@
+interface:
+  display_name: "Create Deal"
+  short_description: "Add a deal with its account and contacts"
+  default_prompt: "Create a deal for the company I just spoke with."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

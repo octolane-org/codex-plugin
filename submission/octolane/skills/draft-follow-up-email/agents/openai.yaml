@@ -1,0 +1,11 @@
+interface:
+  display_name: "Draft Follow-Up Email"
+  short_description: "Write and schedule an email in your voice"
+  default_prompt: "Draft a follow-up to my last customer email in my voice."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"
