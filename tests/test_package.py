@@ -29,7 +29,7 @@ class PackageTests(unittest.TestCase):
     def test_draft_is_deterministic_and_contains_only_public_files(self):
         (self.root / '.env').write_text('PRIVATE_TEST_SENTINEL')
         target, missing, pending = package.build(self.root, draft=True)
-        self.assertEqual(target.name, 'octolane-0.2.1-draft.zip')
+        self.assertEqual(target.name, 'octolane-1.0.0-draft.zip')
         first = target.read_bytes()
         package.build(self.root, draft=True)
         self.assertEqual(first, target.read_bytes())
@@ -44,11 +44,11 @@ class PackageTests(unittest.TestCase):
     def test_light_and_dark_slots_share_the_expected_archive_assets(self):
         target, _, _ = package.build(self.root, draft=True)
         with zipfile.ZipFile(target) as archive:
-            self.assertEqual(set(archive.namelist()), {
-                'plugin.json', 'mcp.json', 'assets/logo.png', 'assets/logo-dark.png'})
+            self.assertEqual(set(archive.namelist()), package.FILES)
             ui = json.loads(archive.read('plugin.json'))['extensions']['com.openai']['interface']
-            for key, name in [('logo', 'logo.png'), ('composerIcon', 'logo.png'),
-                              ('logoDark', 'logo-dark.png'), ('composerIconDark', 'logo-dark.png')]:
+            for key, name in [('logo', 'logo.png'), ('composerIcon', 'composer-icon.svg'),
+                              ('logoDark', 'logo-dark.png'),
+                              ('composerIconDark', 'composer-icon-dark.svg')]:
                 self.assertEqual(ui[key], './assets/' + name)
                 self.assertEqual(archive.read('assets/' + name),
                                  (self.root / 'plugins/octolane/assets' / name).read_bytes())
@@ -148,6 +148,130 @@ class PackageTests(unittest.TestCase):
         self.edit(self.root / 'plugins/octolane/.codex-plugin/plugin.json', lambda d: d['interface'].update({'displayName': 'Different'}))
         with self.assertRaisesRegex(ValueError, 'listing drift'):
             package.validate(self.root)
+
+    def skill(self, name='get-started'):
+        return self.source / 'skills' / name
+
+    def rewrite(self, path, old, new):
+        text = path.read_text()
+        self.assertIn(old, text)
+        path.write_text(text.replace(old, new, 1))
+
+    def test_all_seventeen_skills_ship_with_their_dependency_file(self):
+        self.assertEqual(len(package.SKILLS), 17)
+        target, _, _ = package.build(self.root, draft=True)
+        with zipfile.ZipFile(target) as archive:
+            names = set(archive.namelist())
+            for skill in package.SKILLS:
+                self.assertIn(f'skills/{skill}/agents/openai.yaml', names)
+                self.assertEqual(archive.read(f'skills/{skill}/SKILL.md'),
+                                 (self.skill(skill) / 'SKILL.md').read_bytes())
+
+    def test_missing_extra_and_junk_skill_files_are_rejected(self):
+        (self.skill() / 'SKILL.md').unlink()
+        with self.assertRaisesRegex(ValueError, 'package files'):
+            package.validate(self.root)
+        for name in ('skills/extra/SKILL.md', 'skills/get-started/.DS_Store',
+                     'skills/get-started/references/notes.md'):
+            with self.subTest(name=name):
+                path = self.source / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('unwanted')
+                with self.assertRaisesRegex(ValueError, 'package files'):
+                    package.validate(self.root)
+                path.unlink()
+
+    def test_skill_name_must_match_its_folder(self):
+        self.rewrite(self.skill() / 'SKILL.md', 'name: get-started', 'name: other-skill')
+        with self.assertRaisesRegex(ValueError, 'must equal its folder'):
+            package.validate(self.root)
+
+    def test_skill_needs_frontmatter_and_a_plain_description(self):
+        path = self.skill() / 'SKILL.md'
+        original = path.read_text()
+        cases = {
+            'frontmatter': original.replace('---\n', '', 1),
+            'colon': original.replace('description: ', 'description: Use it: ', 1),
+            'length': original.replace('description: ', 'description: ' + 'x' * 1030 + ' ', 1),
+            'quote': original.replace('description: ', 'description: "', 1),
+        }
+        for label, text in cases.items():
+            with self.subTest(label=label):
+                path.write_text(text)
+                with self.assertRaisesRegex(ValueError, 'Skill get-started'):
+                    package.validate(self.root)
+        path.write_text(original)
+
+    def test_skill_dependency_file_is_pinned_to_the_octolane_server(self):
+        path = self.skill() / 'agents/openai.yaml'
+        original = path.read_text()
+        for old, new in [('value: "octolane"', 'value: "other"'),
+                         ('streamable_http', 'sse'),
+                         ('https://mcp.octolane.com/mcp', 'https://example.com/mcp'),
+                         ('short_description: "', 'short_description: "' + 'x' * 70)]:
+            with self.subTest(old=old):
+                path.write_text(original.replace(old, new))
+                with self.assertRaisesRegex(ValueError, 'openai.yaml'):
+                    package.validate(self.root)
+        path.write_text(original)
+
+    def test_onboarding_skill_and_category_are_pinned(self):
+        path = self.source / 'plugin.json'
+        original = path.read_text()
+        self.edit(path, lambda d: d['extensions']['com.openai'].update(
+            {'onboardingSkill': './skills/my-tasks/SKILL.md'}))
+        with self.assertRaisesRegex(ValueError, 'onboarding skill'):
+            package.validate(self.root)
+        path.write_text(original)
+        self.edit(path, lambda d: d['extensions']['com.openai']['interface'].update(
+            {'category': 'Business & Operations'}))
+        with self.assertRaisesRegex(ValueError, 'category'):
+            package.validate(self.root)
+
+    def test_brand_colors_must_be_hex(self):
+        path = self.source / 'plugin.json'
+        original = path.read_text()
+        for key in ('brandColor', 'brandColorDark'):
+            with self.subTest(key=key):
+                self.edit(path, lambda d: d['extensions']['com.openai']['interface'].update(
+                    {key: 'black'}))
+                with self.assertRaisesRegex(ValueError, 'listing color'):
+                    package.validate(self.root)
+                path.write_text(original)
+
+    def test_unsafe_or_malformed_svg_is_rejected(self):
+        path = self.source / 'assets/composer-icon.svg'
+        original = path.read_text()
+        square = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8">%s</svg>'
+        cases = {
+            'script': square % '<script>alert(1)</script>',
+            'handler': square % '<rect width="8" height="8" onload="x()"/>',
+            'link': square % '<image href="https://example.com/x.png"/>',
+            'external fill': square % '<rect width="8" height="8" fill="url(https://example.com/x)"/>',
+            'entity': '<!DOCTYPE svg [<!ENTITY a "b">]>' + square % '<rect width="8" height="8"/>',
+            'not square': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 4"></svg>',
+            'no namespace': '<svg viewBox="0 0 8 8"><rect width="8" height="8"/></svg>',
+            'not svg': 'plain text',
+        }
+        for label, text in cases.items():
+            with self.subTest(label=label):
+                path.write_text(text)
+                with self.assertRaises(ValueError):
+                    package.validate(self.root)
+        path.write_text(original)
+        package.validate(self.root)
+
+    def test_composer_icon_drift_between_packages_is_rejected(self):
+        local = self.root / 'plugins/octolane/assets/composer-icon.svg'
+        local.write_text(local.read_text() + '\n')
+        with self.assertRaisesRegex(ValueError, 'asset drift'):
+            package.validate(self.root)
+
+    def test_visitors_skill_filters_in_the_tool_call(self):
+        text = (self.skill('website-visitors-to-pipeline') / 'SKILL.md').read_text()
+        for parameter in ('last_visited_after', 'min_intent', 'crm_status', 'page_contains'):
+            self.assertIn(f'`{parameter}`', text)
+        self.assertIn('Do not call `search_accounts` or `search_deals` for each company', text)
 
     def test_duplicate_json_key_rejected(self):
         (self.source / 'mcp.json').write_text('{"mcpServers": {}, "mcpServers": {}}')

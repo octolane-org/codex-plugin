@@ -8,12 +8,38 @@ import re
 import struct
 import sys
 from urllib.parse import urlsplit
+from xml.etree import ElementTree
 import zipfile
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = Path('submission/octolane')
-FILES = {'plugin.json', 'mcp.json', 'assets/logo.png', 'assets/logo-dark.png'}
+MCP_URL = 'https://mcp.octolane.com/mcp'
+SKILLS = (
+    'get-started', 'prepare-for-call', 'after-the-call', 'end-of-day', 'pipeline-review',
+    'deals-gone-quiet', 'website-visitors-to-pipeline', 'find-missing-deals', 'deal-context',
+    'account-brief', 'draft-follow-up-email', 'log-activity', 'create-deal', 'my-tasks',
+    'teach-octolane', 'save-accounts-to-octolane', 'send-notetaker',
+)
+FILES = {
+    'plugin.json', 'mcp.json', 'assets/logo.png', 'assets/logo-dark.png',
+    'assets/composer-icon.svg', 'assets/composer-icon-dark.svg',
+} | {f'skills/{skill}/{name}' for skill in SKILLS for name in ('SKILL.md', 'agents/openai.yaml')}
+SVG_TAGS = {'svg', 'g', 'rect', 'path', 'circle', 'ellipse', 'line', 'polyline', 'polygon',
+            'defs', 'clipPath', 'mask', 'title', 'desc'}
+SKILL_NAME = re.compile(r'[a-z0-9]+(?:-[a-z0-9]+)*')
+SKILL_YAML = re.compile(
+    r'interface:\n'
+    r'  display_name: "([^"\n]+)"\n'
+    r'  short_description: "([^"\n]+)"\n'
+    r'  default_prompt: "([^"\n]+)"\n'
+    r'dependencies:\n'
+    r'  tools:\n'
+    r'    - type: "mcp"\n'
+    r'      value: "octolane"\n'
+    r'      description: "[^"\n]+"\n'
+    r'      transport: "streamable_http"\n'
+    r'      url: "' + re.escape(MCP_URL) + r'"\n')
 GATES = {
     'publisher_verified', 'countries_languages_confirmed', 'listing_urls_verified',
     'privacy_coverage_approved', 'oauth_runtime_passed', 'live_72_tool_contracts_passed',
@@ -68,6 +94,52 @@ def check_png(data, minimum):
             'PNG must be square and within required dimensions')
 
 
+def check_svg(data):
+    """Accept only a small, square, self-contained SVG: no scripts, links or entities."""
+    require(len(data) <= 64 * 1024, 'Oversized SVG')
+    try:
+        text = data.decode('utf-8')
+        # Entity expansion and external entities both need a DTD, so refusing one before the
+        # standard-library parser runs is what keeps this check dependency-free and safe.
+        require(not re.search(r'<!(?:doctype|entity)', text, re.I), 'SVG declarations are forbidden')
+        root = ElementTree.fromstring(text)
+    except (UnicodeDecodeError, ElementTree.ParseError):
+        raise ValueError('Invalid SVG')
+    namespace = '{http://www.w3.org/2000/svg}'
+    require(root.tag == namespace + 'svg', 'SVG root must be in the SVG namespace')
+    for element in root.iter():
+        tag = element.tag.removeprefix(namespace) if isinstance(element.tag, str) else None
+        require(tag in SVG_TAGS and element.tag.startswith(namespace), 'Unexpected SVG element')
+        for name, value in element.attrib.items():
+            attribute = name.rpartition('}')[2].lower()
+            require(not attribute.startswith('on') and 'href' not in attribute
+                    and not re.search(r'javascript:|url\(\s*[\'"]?(?:https?:|data:)', value, re.I),
+                    'SVG scripts and external references are forbidden')
+    box = root.get('viewBox', '').replace(',', ' ').split()
+    require(len(box) == 4 and float(box[2]) == float(box[3]) > 0, 'SVG viewBox must be square')
+
+
+def check_skill(package, folder):
+    """One skill: a frontmatter-first SKILL.md and the fixed Octolane MCP dependency file."""
+    base = package / 'skills' / folder
+    text = (base / 'SKILL.md').read_text(encoding='utf-8')
+    require(len(text) <= 20000 and '\r' not in text, f'Skill {folder}: oversized or CRLF SKILL.md')
+    match = re.fullmatch(r'---\nname: ([^\n]+)\ndescription: ([^\n]+)\n---\n\n# [^\n]+\n.+', text, re.S)
+    require(match, f'Skill {folder}: SKILL.md needs name and description frontmatter, then a heading')
+    name, description = match.group(1), match.group(2)
+    require(name == folder and SKILL_NAME.fullmatch(name) and len(name) <= 64,
+            f'Skill name must equal its folder: {folder}')
+    require(len(description) <= 1024 and description == description.strip()
+            and ': ' not in description and ' #' not in description
+            and description[0] not in '"\'[]{}>|&*!%@`#-?:,',
+            f'Skill {folder}: description must be a plain one-line YAML value of at most 1024 characters')
+    interface = SKILL_YAML.fullmatch((base / 'agents/openai.yaml').read_text(encoding='utf-8'))
+    require(interface, f'Skill {folder}: agents/openai.yaml must declare the Octolane MCP server')
+    display, short, prompt = interface.groups()
+    require(len(display) <= 64 and len(short) <= 64 and len(prompt) <= 128,
+            f'Skill {folder}: openai.yaml interface text is too long')
+
+
 def validate(root=ROOT, release=False):
     package = root / PACKAGE
     require(not package.is_symlink() and not package.parent.is_symlink(),
@@ -88,12 +160,17 @@ def validate(root=ROOT, release=False):
     require(not ({'apps', 'interface', 'mcpServers', 'skills'} & manifest.keys()),
             'Legacy fields are not allowed in portable manifest')
     ext = manifest['extensions']['com.openai']
-    require(set(ext) <= {'interface', 'review', 'publication'}, 'Unexpected OpenAI extension')
+    require(set(ext) <= {'interface', 'review', 'publication', 'onboardingSkill'},
+            'Unexpected OpenAI extension')
+    require(ext.get('onboardingSkill') == './skills/get-started/SKILL.md',
+            'The onboarding skill must be the packaged get-started skill')
     ui = ext['interface']
     require(set(ui) <= {'displayName', 'shortDescription', 'longDescription', 'developerName',
                         'category', 'composerIcon', 'logo', 'logoDark', 'composerIconDark', 'capabilities', 'websiteURL',
                         'supportURL', 'privacyPolicyURL', 'termsOfServiceURL', 'brandColor',
-                        'defaultPrompt'}, 'Unexpected listing fields')
+                        'brandColorDark', 'defaultPrompt'}, 'Unexpected listing fields')
+    for key in ('brandColor', 'brandColorDark'):
+        require(re.fullmatch(r'#[0-9A-Fa-f]{6}', ui.get(key, '')), f'Invalid listing color: {key}')
     require(set(ext['review']) <= {'test_cases', 'demo_recording_url'},
             'Unexpected review fields; keep credentials outside the package')
     for key, maximum in [('displayName', 30), ('shortDescription', 30),
@@ -101,7 +178,7 @@ def validate(root=ROOT, release=False):
         value = ui[key]
         require(isinstance(value, str) and value.strip() and len(value) <= maximum,
                 f'Invalid listing field: {key}')
-    require(ui['category'] == 'Business & Operations', 'Incorrect submission category')
+    require(ui['category'] == 'Sales', 'Incorrect submission category')
     prompts = ui['defaultPrompt']
     require(isinstance(prompts, list) and 1 <= len(prompts) <= 3, 'Expected 1-3 prompts')
     for p in prompts:
@@ -115,11 +192,16 @@ def validate(root=ROOT, release=False):
         else:
             https(ui[key])
     for key, file, minimum in [('logo', 'assets/logo.png', 256),
-                               ('composerIcon', 'assets/logo.png', 48),
+                               ('composerIcon', 'assets/composer-icon.svg', None),
                                ('logoDark', 'assets/logo-dark.png', 256),
-                               ('composerIconDark', 'assets/logo-dark.png', 48)]:
+                               ('composerIconDark', 'assets/composer-icon-dark.svg', None)]:
         require(ui[key] in (file, './' + file), f'Unexpected asset path: {key}')
-        check_png((package / file).read_bytes(), minimum)
+        if minimum:
+            check_png((package / file).read_bytes(), minimum)
+        else:
+            check_svg((package / file).read_bytes())
+    for skill in SKILLS:
+        check_skill(package, skill)
     local = read_json(root / 'plugins/octolane/.codex-plugin/plugin.json')
     require(local.get('mcpServers') == './.mcp.json', 'Local MCP reference changed')
     local_mcp = read_json(root / 'plugins/octolane/.mcp.json')
@@ -135,7 +217,7 @@ def validate(root=ROOT, release=False):
     require(local['name'] == manifest['name'] and local['version'] == manifest['version'],
             'Local/public identity or version drift')
     require(local['interface'] == ui, 'Local/public listing drift')
-    for file in ('assets/logo-dark.png', 'assets/logo.png'):
+    for file in sorted(name for name in FILES if name.startswith('assets/')):
         require((package / file).read_bytes() == (root / 'plugins/octolane' / file).read_bytes(),
                 'Local/public asset drift')
     require(mcp['$schema'] == 'https://agent-plugins.org/schemas/1.0.0/mcp.schema.json',
@@ -147,7 +229,7 @@ def validate(root=ROOT, release=False):
             'Public MCP config must not contain headers, credentials, or tool filters')
     require(server.get('extensions') == {'com.openai': {'auth': {'type': 'oauth', 'baseScopes': ['crm:read', 'crm:write'], 'defaultScopes': []}}},
             'Public MCP config requires read/write OAuth declaration without credentials or overrides')
-    require(server['type'] == 'streamable-http' and server['url'] == 'https://mcp.octolane.com/mcp',
+    require(server['type'] == 'streamable-http' and server['url'] == MCP_URL,
             'Unexpected MCP endpoint/transport')
     tools = read_json(root / 'docs/tool-inventory.json')['tools']
     names = {t['name'] for t in tools}

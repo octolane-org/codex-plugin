@@ -1,0 +1,11 @@
+interface:
+  display_name: "Pipeline Review"
+  short_description: "See what needs attention today"
+  default_prompt: "What needs attention in my pipeline today?"
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

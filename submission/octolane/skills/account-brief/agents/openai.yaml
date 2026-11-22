@@ -1,0 +1,11 @@
+interface:
+  display_name: "Account Brief"
+  short_description: "Everything Octolane knows about a company"
+  default_prompt: "What do we know about this account?"
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

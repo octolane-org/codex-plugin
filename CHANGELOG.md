@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.0 — unpublished candidate, 2026-11-21
+
+Follows 0.2.1, which the ChatGPT listing showed as its live version on 21 November 2026 (OCT-4407).
+
+- Add 17 skills under `submission/octolane/skills/`, each a `SKILL.md` and an `agents/openai.yaml` that points at the Octolane MCP server: get started, prepare for call, after the call, end of day, pipeline review, deals gone quiet, website visitors to pipeline, find missing deals, deal context, account brief, draft follow-up email, log activity, create deal, my tasks, teach Octolane, save accounts, send notetaker.
+- Move the listing to the Sales category with a new description, three starter prompts, SVG composer icons for light and dark, `brandColorDark` and `get-started` as the onboarding skill. The local Codex package carries the same listing text and icons.
+- Keep the OAuth declaration, the MIT license, `repository` and the five positive and three negative review cases from 0.2.1. The PNG logos are unchanged.
+- `website-visitors-to-pipeline` reads each company's CRM status and most viewed pages from one `get_signal_visitors` call with `last_visited_after`, `min_intent` and `crm_status` (OCT-4456), instead of searching accounts and deals per company. Upload this version only after that backend change is live.
+- The validator and tests cover the skills, the SVG icons, the category and the onboarding skill. CI validates the 1.0.0 draft ZIP.
+
 ## 0.2.1 — unpublished candidate, 2026-11-01
 
 - Replace the inset rounded icon with Vitor’s supplied 1024px square PNGs.

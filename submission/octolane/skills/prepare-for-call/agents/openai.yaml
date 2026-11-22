@@ -1,0 +1,11 @@
+interface:
+  display_name: "Prepare for Call"
+  short_description: "Brief me before my next sales call"
+  default_prompt: "Prepare me for my next sales call."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"

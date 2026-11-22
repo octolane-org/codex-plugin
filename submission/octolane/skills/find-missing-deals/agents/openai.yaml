@@ -1,0 +1,11 @@
+interface:
+  display_name: "Find Missing Deals"
+  short_description: "Find buying conversations with no deal yet"
+  default_prompt: "Find conversations in my inbox and meetings that should be deals."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "octolane"
+      description: "Octolane CRM: deals, contacts, accounts, email, meetings, tasks, website visitors and memory"
+      transport: "streamable_http"
+      url: "https://mcp.octolane.com/mcp"
