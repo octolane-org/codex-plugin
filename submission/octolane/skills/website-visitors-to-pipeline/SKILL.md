@@ -7,6 +7,17 @@ description: Turn companies visiting the user's website into pipeline with Octol
 
 Octolane Signal identifies the companies behind anonymous website traffic. It identifies companies, not people.
 
+## Show the visitors as a card
+
+When the user only wants to see who visited, or which visiting companies are not in their pipeline, and `show_website_visitors` is available, use it instead of the steps below:
+
+- Call it once per request. It takes the same filters as `get_signal_visitors` (`last_visited_after`, `min_intent`, `crm_status`, `page_contains`, `sort`) and a `limit` of at most 8 (default 5). A second call, for example one per `crm_status`, can leave the user looking at an empty card while your answer describes the other call's companies.
+- For "not in my pipeline", send `crm_status: "not_in_crm"`. Afterwards offer to show the companies that have an account and no deal (`account_no_deal`).
+- The card shows each company's intent score, visits, top pages and CRM status, with a Create deal button on each company that has no deal. A deal exists only after the user clicks it, so never say one was created.
+- After the card, say in one sentence how many companies fit and which looks strongest and why, using only the returned data.
+
+If the user wants the ranked report with fit scores, or the card tool is not available, follow steps 1 to 6.
+
 ## 1. Get visitors
 
 Call `get_signal_visitors` once and let its filters do the narrowing:

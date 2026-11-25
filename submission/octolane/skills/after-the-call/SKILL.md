@@ -34,12 +34,20 @@ c. **CRM changes** as before → after:
    - new contacts with real email addresses;
    - tasks with owner and due date.
 
+When `show_deal_changes` is available, show the stage, next step, close date and amount changes, and the follow-up tasks, as a card instead of a list. Call it once with:
+
+- `deal_id`: the deal's `opportunity_id`.
+- `meeting_id`: the call, so the quotes can be checked.
+- `changes`: only changes the call supports. `field` is `stage` (a stage name from the deal's own pipeline), `amount` (a plain number), `close_date` (YYYY-MM-DD) or `next_step`. For each, `quote` is the exact words someone said, copied verbatim from the transcript. Never paraphrase or invent one: the card shows a quote only if it finds it in the call.
+- `tasks`: the follow-ups the call produced, each with a short `title` and an optional `due_date` (YYYY-MM-DD).
+
+The user ticks the changes they accept and clicks Apply on the card. Nothing is saved until then, so never say the changes are saved. New contacts, the internal note and the email stay in the review below, as text.
+
 Ask for approval. The user can approve all, some, or edit any part.
 
 ## 5. Apply what was approved
 
-- Stage: `update_deal_stage`. Other deal fields: `bulk_update_deals`.
-- Tasks: `create_task` with `tasks` rows linked by `entity_type: "opportunity"`.
+- Stage, deal fields and tasks: the card's Apply button writes what the user ticked, so do not write those again. Without the card, stage: `update_deal_stage`; other deal fields: `bulk_update_deals`; tasks: `create_task` with `tasks` rows linked by `entity_type: "opportunity"`.
 - Summary: `create_note` on the deal.
 - Email: recap recipients, subject and send time, then `schedule_bulk_emails` from the user's connected mailbox. Default send time: 9:00 the next business morning in the user's timezone.
 
