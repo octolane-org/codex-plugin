@@ -1,6 +1,6 @@
 {
   "name": "octolane",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Octolane is the CRM that fills itself from Gmail, Google Calendar and recorded calls. Prepare for calls, follow up after them, keep deals current, rescue deals that went quiet and turn website visitors into pipeline, all from ChatGPT.",
   "author": {
     "name": "Octolane",
@@ -24,12 +24,13 @@
   "interface": {
     "displayName": "Octolane",
     "shortDescription": "The CRM that fills itself",
-    "longDescription": "Octolane is a CRM that builds itself from your Gmail, Google Calendar and recorded calls, so ChatGPT has real pipeline to work from and somewhere to write back, without anyone typing data in.\n\nWhat you can do:\n- Prepare for a call with the deal, every email and meeting, open tasks and what the stage still needs.\n- Follow up after a call: Octolane's notetaker recorded it, so ChatGPT drafts the recap in your voice, updates the deal and schedules the email from your Gmail after you approve.\n- Close out the day: update every deal touched by today's calls and emails in one review.\n- Rescue deals that went quiet, with the reason and a re-engagement email for each.\n- Turn website visitors into pipeline: Octolane Signal names the companies on your site, scores intent and fit, and checks whether they are already in your CRM.\n- Find buying conversations in your inbox that have no deal yet.\n- Save accounts and contacts from research or other plugins without duplicates.\n\nWorks well with the Sales plugin: Sales does the research and writing, Octolane holds the CRM, the conversations and the write-back.\n\nOctolane only sees what your own account can see. Nothing is created, changed or scheduled without your approval, and emails are scheduled from your own mailbox, never sent by Octolane on its own.",
+    "longDescription": "Octolane is a CRM that builds itself from your Gmail, Google Calendar and recorded calls, so ChatGPT has real pipeline to work from and somewhere to write back, without anyone typing data in.\n\nWhat you can do:\n- Prepare for a call with the deal, every email and meeting, open tasks and what the stage still needs.\n- Follow up after a call: Octolane's notetaker recorded it, so ChatGPT drafts the recap in your voice, updates the deal and schedules the email from your Gmail after you approve.\n- Close out the day: update every deal touched by today's calls and emails in one review.\n- Rescue deals that went quiet, with the reason and a re-engagement email for each.\n- Turn website visitors into pipeline: Octolane Signal names the companies on your site, scores intent and fit, and checks whether they are already in your CRM.\n- Find buying conversations in your inbox that have no deal yet.\n- Save accounts and contacts from research or other plugins without duplicates.\n- Open your Octolane home in ChatGPT: upcoming meetings, tasks due, top pipelines and recent performance on one screen.\n- See a call brief, the companies on your website and suggested deal changes as cards, and act on them with one click.\n\nWorks well with the Sales plugin: Sales does the research and writing, Octolane holds the CRM, the conversations and the write-back.\n\nOctolane only sees what your own account can see. Nothing is created, changed or scheduled without your approval, and a card button acts only when you click it. Emails are scheduled from your own mailbox, never sent by Octolane on its own.",
     "developerName": "Octolane",
     "category": "Sales",
     "capabilities": [
       "Read",
-      "Write"
+      "Write",
+      "Interactive"
     ],
     "websiteURL": "https://www.octolane.com",
     "supportURL": "https://octolane.com/docs/support/contact",

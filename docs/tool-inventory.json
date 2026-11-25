@@ -505,6 +505,38 @@
       "hint_group": "IDEMPOTENT_WRITE",
       "source": "apps/mcp/src/mcp/tools/handlers/memory/deleteMemory.ts",
       "runtime_status": "Not run"
+    },
+    {
+      "name": "show_octolane_home",
+      "key": "SHOW_OCTOLANE_HOME",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/apps/home/showOctolaneHome.ts",
+      "runtime_status": "Not run",
+      "added_in": "1.0.1"
+    },
+    {
+      "name": "show_call_brief",
+      "key": "SHOW_CALL_BRIEF",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/apps/callBrief/showCallBrief.ts",
+      "runtime_status": "Not run",
+      "added_in": "1.0.1"
+    },
+    {
+      "name": "show_website_visitors",
+      "key": "SHOW_WEBSITE_VISITORS",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/apps/websiteVisitors/showWebsiteVisitors.ts",
+      "runtime_status": "Not run",
+      "added_in": "1.0.1"
+    },
+    {
+      "name": "show_deal_changes",
+      "key": "SHOW_DEAL_CHANGES",
+      "hint_group": "READ",
+      "source": "apps/mcp/src/mcp/apps/dealChanges/showDealChanges.ts",
+      "runtime_status": "Not run",
+      "added_in": "1.0.1"
     }
   ]
 }

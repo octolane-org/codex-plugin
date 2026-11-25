@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "octolane",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Octolane is the CRM that fills itself from Gmail, Google Calendar and recorded calls. Prepare for calls, follow up after them, keep deals current, rescue deals that went quiet and turn website visitors into pipeline, all from ChatGPT.",
   "author": {
     "name": "Octolane",
@@ -27,12 +27,13 @@
       "interface": {
         "displayName": "Octolane",
         "shortDescription": "The CRM that fills itself",
-        "longDescription": "Octolane is a CRM that builds itself from your Gmail, Google Calendar and recorded calls, so ChatGPT has real pipeline to work from and somewhere to write back, without anyone typing data in.\n\nWhat you can do:\n- Prepare for a call with the deal, every email and meeting, open tasks and what the stage still needs.\n- Follow up after a call: Octolane's notetaker recorded it, so ChatGPT drafts the recap in your voice, updates the deal and schedules the email from your Gmail after you approve.\n- Close out the day: update every deal touched by today's calls and emails in one review.\n- Rescue deals that went quiet, with the reason and a re-engagement email for each.\n- Turn website visitors into pipeline: Octolane Signal names the companies on your site, scores intent and fit, and checks whether they are already in your CRM.\n- Find buying conversations in your inbox that have no deal yet.\n- Save accounts and contacts from research or other plugins without duplicates.\n\nWorks well with the Sales plugin: Sales does the research and writing, Octolane holds the CRM, the conversations and the write-back.\n\nOctolane only sees what your own account can see. Nothing is created, changed or scheduled without your approval, and emails are scheduled from your own mailbox, never sent by Octolane on its own.",
+        "longDescription": "Octolane is a CRM that builds itself from your Gmail, Google Calendar and recorded calls, so ChatGPT has real pipeline to work from and somewhere to write back, without anyone typing data in.\n\nWhat you can do:\n- Prepare for a call with the deal, every email and meeting, open tasks and what the stage still needs.\n- Follow up after a call: Octolane's notetaker recorded it, so ChatGPT drafts the recap in your voice, updates the deal and schedules the email from your Gmail after you approve.\n- Close out the day: update every deal touched by today's calls and emails in one review.\n- Rescue deals that went quiet, with the reason and a re-engagement email for each.\n- Turn website visitors into pipeline: Octolane Signal names the companies on your site, scores intent and fit, and checks whether they are already in your CRM.\n- Find buying conversations in your inbox that have no deal yet.\n- Save accounts and contacts from research or other plugins without duplicates.\n- Open your Octolane home in ChatGPT: upcoming meetings, tasks due, top pipelines and recent performance on one screen.\n- See a call brief, the companies on your website and suggested deal changes as cards, and act on them with one click.\n\nWorks well with the Sales plugin: Sales does the research and writing, Octolane holds the CRM, the conversations and the write-back.\n\nOctolane only sees what your own account can see. Nothing is created, changed or scheduled without your approval, and a card button acts only when you click it. Emails are scheduled from your own mailbox, never sent by Octolane on its own.",
         "developerName": "Octolane",
         "category": "Sales",
         "capabilities": [
           "Read",
-          "Write"
+          "Write",
+          "Interactive"
         ],
         "websiteURL": "https://www.octolane.com",
         "supportURL": "https://octolane.com/docs/support/contact",
@@ -83,6 +84,30 @@
               "prompt": "Schedule the approved follow-up email to our test contact tomorrow at 10 am.",
               "tools_triggered": "schedule_bulk_emails",
               "expected_behavior": "Resolve and confirm recipient, subject, body, date and timezone before scheduling. Report the actual result; do not duplicate an uncertain scheduled send."
+            },
+            {
+              "description": "Use a synthetic workspace with an upcoming meeting with an outside guest, an open task due today or earlier, a pipeline with open deals, and deals closed in the last 60 days.",
+              "prompt": "Open Octolane.",
+              "tools_triggered": "show_octolane_home",
+              "expected_behavior": "Show the Octolane home with four cards (upcoming meetings, tasks due, top pipelines, recent performance) that match the fixture, then reply in one or two sentences on what stands out. Reading the home changes nothing. A task changes only when the reviewer ticks its box. A card with no data shows its empty state, and one that fails says so with Try again, without blanking the others."
+            },
+            {
+              "description": "Use a synthetic workspace with an upcoming meeting with an outside guest, a deal for that company, recent emails and one recorded earlier call.",
+              "prompt": "Prepare me for my next call with an outside contact and show the call brief card.",
+              "tools_triggered": "search_meetings, search_deals, search_emails, get_meeting_details, show_call_brief",
+              "expected_behavior": "Resolve the right meeting and deal first. The card shows the time, attendees, the fixture deal's stage, amount and close date, and at most three things to know that appear in the fixture emails or call. A notetaker is sent only if the reviewer clicks Send notetaker, and the reply must not say one is on the way before that."
+            },
+            {
+              "description": "Use a synthetic workspace with Octolane Signal and identified visitors in the last week: some companies not in the CRM, some with an account and no deal, some with an open deal.",
+              "prompt": "Which companies visited our website this week and are not in our pipeline? Show them as a card.",
+              "tools_triggered": "show_website_visitors",
+              "expected_behavior": "Call the card tool once with the not-in-CRM filter and show the fixture companies with intent score, visits, top pages and CRM status. Create deal appears only on companies with no deal, and a deal is created only when the reviewer clicks it. The reply says how many companies fit and offers to show accounts with no deal, and never says a deal exists before the click."
+            },
+            {
+              "description": "Use a synthetic recorded call with a transcript, linked to a deal whose stage, amount and close date differ from what the call says.",
+              "prompt": "Show the changes my most recent recorded call supports for its deal as a card.",
+              "tools_triggered": "search_meetings, get_meeting_details, search_deals, get_deal_details, show_deal_changes",
+              "expected_behavior": "Propose only changes the call supports, each with a quote copied from the transcript, and show them on the card. Nothing is saved until the reviewer ticks changes and clicks Apply, and the reply must not say the changes are saved before that."
             }
           ],
           "negative": [
