@@ -29,7 +29,7 @@ class PackageTests(unittest.TestCase):
     def test_draft_is_deterministic_and_contains_only_public_files(self):
         (self.root / '.env').write_text('PRIVATE_TEST_SENTINEL')
         target, missing, pending = package.build(self.root, draft=True)
-        self.assertEqual(target.name, 'octolane-1.0.0-draft.zip')
+        self.assertEqual(target.name, 'octolane-1.0.1-draft.zip')
         first = target.read_bytes()
         package.build(self.root, draft=True)
         self.assertEqual(first, target.read_bytes())
@@ -128,7 +128,7 @@ class PackageTests(unittest.TestCase):
 
     def test_duplicate_tool_inventory_rejected(self):
         self.edit(self.root / 'docs/tool-inventory.json', lambda d: d['tools'].__setitem__(1, d['tools'][0]))
-        with self.assertRaisesRegex(ValueError, '72 distinct'):
+        with self.assertRaisesRegex(ValueError, '76 distinct'):
             package.validate(self.root)
 
     def test_unknown_review_tool_rejected(self):
@@ -266,6 +266,45 @@ class PackageTests(unittest.TestCase):
         local.write_text(local.read_text() + '\n')
         with self.assertRaisesRegex(ValueError, 'asset drift'):
             package.validate(self.root)
+
+    def test_listing_declares_read_write_and_interactive(self):
+        ui = json.loads((self.source / 'plugin.json').read_text())['extensions']['com.openai']['interface']
+        self.assertEqual(ui['capabilities'], ['Read', 'Write', 'Interactive'])
+        path = self.source / 'plugin.json'
+        for bad in (['Read', 'Write'], [], ['Read', 'Write', 'Interactive', 'Interactive'],
+                    ['Read', 'Write', 'Interactive', 'x' * 121], ['Read', 'Write', 'Interactive', 'a\nb']):
+            with self.subTest(capabilities=bad):
+                self.edit(path, lambda d: d['extensions']['com.openai']['interface'].update({'capabilities': bad}))
+                with self.assertRaisesRegex(ValueError, 'apabilities'):
+                    package.validate(self.root)
+        self.edit(path, lambda d: d['extensions']['com.openai']['interface'].update(
+            {'capabilities': ui['capabilities']}))
+        package.validate(self.root)
+
+    def test_card_tools_are_in_the_inventory_and_named_by_a_skill_and_a_review_case(self):
+        card_tools = {'show_octolane_home', 'show_call_brief', 'show_website_visitors', 'show_deal_changes'}
+        inventory = json.loads((self.root / 'docs/tool-inventory.json').read_text())['tools']
+        self.assertEqual({t['name'] for t in inventory if t.get('added_in') == '1.0.1'}, card_tools)
+        skills = ''.join((self.skill(name) / 'SKILL.md').read_text() for name in package.SKILLS)
+        cases = json.loads((self.source / 'plugin.json').read_text())['extensions']['com.openai']['review']['test_cases']
+        triggered = ', '.join(case['tools_triggered'] for case in cases['positive'])
+        for tool in sorted(card_tools):
+            with self.subTest(tool=tool):
+                self.assertIn(f'`{tool}`', skills)
+                self.assertIn(tool, triggered)
+
+    def test_card_skills_never_claim_an_action_before_the_click(self):
+        for name, phrase in [('prepare-for-call', 'never say a notetaker is on the way'),
+                             ('after-the-call', 'never say the changes are saved'),
+                             ('website-visitors-to-pipeline', 'never say one was created')]:
+            with self.subTest(skill=name):
+                self.assertIn(phrase, (self.skill(name) / 'SKILL.md').read_text())
+
+    def test_visitors_skill_makes_one_card_call_per_request(self):
+        text = (self.skill('website-visitors-to-pipeline') / 'SKILL.md').read_text()
+        self.assertIn('Call it once per request', text)
+        self.assertIn('`crm_status: "not_in_crm"`', text)
+        self.assertIn('`account_no_deal`', text)
 
     def test_visitors_skill_filters_in_the_tool_call(self):
         text = (self.skill('website-visitors-to-pipeline') / 'SKILL.md').read_text()

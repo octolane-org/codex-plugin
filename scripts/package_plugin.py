@@ -179,6 +179,15 @@ def validate(root=ROOT, release=False):
         require(isinstance(value, str) and value.strip() and len(value) <= maximum,
                 f'Invalid listing field: {key}')
     require(ui['category'] == 'Sales', 'Incorrect submission category')
+    # OpenAI's final-submission rule: at most 20 one-line entries of at most 120 characters. The
+    # listing also promises the Octolane cards and home, so it must declare Interactive.
+    capabilities = ui['capabilities']
+    require(isinstance(capabilities, list) and 1 <= len(capabilities) <= 20
+            and all(isinstance(c, str) and c.strip() and len(c) <= 120 and '\n' not in c
+                    and '\r' not in c for c in capabilities)
+            and len(set(capabilities)) == len(capabilities), 'Invalid listing capabilities')
+    require({'Read', 'Write', 'Interactive'} <= set(capabilities),
+            'Capabilities must declare Read, Write and Interactive')
     prompts = ui['defaultPrompt']
     require(isinstance(prompts, list) and 1 <= len(prompts) <= 3, 'Expected 1-3 prompts')
     for p in prompts:
@@ -233,10 +242,10 @@ def validate(root=ROOT, release=False):
             'Unexpected MCP endpoint/transport')
     tools = read_json(root / 'docs/tool-inventory.json')['tools']
     names = {t['name'] for t in tools}
-    require(len(tools) == len(names) == 72, 'Expected 72 distinct existing tools')
+    require(len(tools) == len(names) == 76, 'Expected 76 distinct existing tools')
     cases = ext['review']['test_cases']
-    require(len(cases['positive']) == 5 and len(cases['negative']) == 3,
-            'Expected five positive and three negative review cases')
+    require(len(cases['positive']) == 9 and len(cases['negative']) == 3,
+            'Expected nine positive and three negative review cases')
     for group in ('positive', 'negative'):
         for case in cases[group]:
             fields = {'description', 'prompt'}

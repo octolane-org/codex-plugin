@@ -6,7 +6,7 @@ The release target is all 72 existing MCP tools for subscribed Octolane customer
 
 **Status: 0.2.0 published on 29 October 2026.** [Open Octolane](https://chatgpt.com/plugins/plugin_asdk_app_6ae0e3639950819189e52b37939d9d52). See the [release record](docs/releases/0.2.0.md), [changelog](CHANGELOG.md) and [release procedure](docs/release-procedure.md). Publication does not certify every proposed runtime/security test in the historical local checklist.
 
-The current source prepares **1.0.0, an unpublished candidate with 17 skills**. See [candidate evidence](docs/releases/1.0.0-candidate.md). The earlier [0.2.1 icon candidate](docs/releases/0.2.1-candidate.md) is its base.
+The current source prepares **1.0.1, an unpublished candidate** that adds the Octolane home and cards to the 17 skills of [1.0.0](docs/releases/1.0.0-candidate.md). See [candidate evidence](docs/releases/1.0.1-candidate.md). The earlier [0.2.1 icon candidate](docs/releases/0.2.1-candidate.md) is the base of 1.0.0.
 
 Start with the [local end-to-end testing guide](docs/local-testing.md). See [official branding and screenshot evidence](docs/branding.md) for the updated icons.
 

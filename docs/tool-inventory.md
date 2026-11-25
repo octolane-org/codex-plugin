@@ -1,6 +1,6 @@
 # MCP tool inventory
 
-72 statically registered tools from 70 registration calls. Runtime verification: **Not run**.
+72 statically registered tools from 70 registration calls, plus the four model-visible Octolane app tools added for 1.0.1 (76). Runtime verification: **Not run**.
 
 Source: local backend checkout at `8dfd3c748335f268e9201654b84b7479c3e4f9ae`; this is not proof of production exposure or approval.
 
@@ -78,3 +78,14 @@ Source: local backend checkout at `8dfd3c748335f268e9201654b84b7479c3e4f9ae`; th
 | `memory_get` | `READ` | `apps/mcp/src/mcp/tools/handlers/memory/getMemory.ts` |
 | `memory_upsert` | `IDEMPOTENT_WRITE` | `apps/mcp/src/mcp/tools/handlers/memory/upsertMemory.ts` |
 | `memory_delete` | `IDEMPOTENT_WRITE` | `apps/mcp/src/mcp/tools/handlers/memory/deleteMemory.ts` |
+
+## Added for 1.0.1
+
+Registered by the Octolane app modules (OCT-4460, OCT-4490) in the backend `dev` branch from the merge of the home (`849fee102`), read from source, not from a production `tools/list`. Each is read-only and shows a card; none saves or sends anything until the user clicks a button on the card. The cards' own buttons call four more tools (`apply_deal_changes`, `create_visitor_deal`, `send_call_notetaker`, `set_home_task_done`). Those are hidden from the model (app-only) and are not listed. OpenAI holds new and changed tool definitions for manual review, and the three card tools register only where `MCP_APPS_CARDS_ENABLED` is on.
+
+| Tool | Annotation group | Handler |
+| --- | --- | --- |
+| `show_octolane_home` | `READ` | `apps/mcp/src/mcp/apps/home/showOctolaneHome.ts` |
+| `show_call_brief` | `READ` | `apps/mcp/src/mcp/apps/callBrief/showCallBrief.ts` |
+| `show_website_visitors` | `READ` | `apps/mcp/src/mcp/apps/websiteVisitors/showWebsiteVisitors.ts` |
+| `show_deal_changes` | `READ` | `apps/mcp/src/mcp/apps/dealChanges/showDealChanges.ts` |

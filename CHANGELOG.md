@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.1 — unpublished candidate, 2026-11-25
+
+Follows 1.0.0, which was submitted for review on 21 November 2026. This record does not confirm its approval or publication (OCT-4407, item 6).
+
+- Declare the `Interactive` capability beside `Read` and `Write` in the listing, and add two lines to the long description: the Octolane home in ChatGPT, and call briefs, website visitors and deal changes as cards that act only when the user clicks.
+- Make four skills use the new Octolane tools when they are available, with the written flow as the fallback when they are not: `prepare-for-call` shows `show_call_brief`, `after-the-call` shows `show_deal_changes`, `website-visitors-to-pipeline` shows `show_website_visitors` once per request, and `get-started` offers `show_octolane_home`. Each says the action has not happened until the user clicks.
+- Add four positive review cases, one per surface (the home and the three cards), and the four model-visible tools to the tool inventory (76). The four app-only tools the card buttons call are hidden from the model and are not listed.
+- Keep the three starter prompts: OpenAI allows at most three. `end-of-day` is unchanged: the deal changes card covers one deal at a time.
+- The validator now also checks the capabilities (up to 20 one-line entries of at most 120 characters, including Read, Write and Interactive) and the new inventory and case counts. The local Codex package carries the same version and listing. CI validates the 1.0.1 draft ZIP.
+
+See [candidate evidence](docs/releases/1.0.1-candidate.md).
+
 ## 1.0.0 — unpublished candidate, 2026-11-21
 
 Follows 0.2.1, which the ChatGPT listing showed as its live version on 21 November 2026 (OCT-4407).

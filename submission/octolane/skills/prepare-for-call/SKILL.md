@@ -31,11 +31,24 @@ Give the user a brief they can read in two minutes, built only from what Octolan
 - **Goal for this call** and **three questions to ask**.
 - **What we owe them:** open tasks and promises from earlier calls.
 
-## 4. Offer next steps
+## 4. Show the brief card
+
+When `show_call_brief` is available, call it once for the meeting after you write the brief:
+
+- `meeting_id`: the meeting from `search_meetings`.
+- `deal_id`: the deal from `search_deals`, when there is one. Leave it out when there is none.
+- `things_to_know`: at most three items, each taken only from what you found and naming its email or meeting. Never a guess.
+- `goal`: what the user should get out of this call, in one sentence.
+
+The card shows the time, link, attendees, the deal's stage, amount and close date, the goal, and Send notetaker and Open in Octolane buttons. Nothing is sent until the user clicks Send notetaker, so never say a notetaker is on the way. Then say in one sentence the main open question for the call.
+
+If the card tool is not available, the written brief is the answer.
+
+## 5. Offer next steps
 
 - Outside research (news, funding, competitors, business case): suggest the Sales plugin's research skills and merge their output into the brief. Do not browse the web unless the user asks.
 - No open deal and clear buying interest: offer once to create one with the create-deal skill.
-- The meeting has a join link and the user wants it recorded: use the send-notetaker skill.
+- The meeting has a join link and the user wants it recorded: the card's Send notetaker button does it, or use the send-notetaker skill if there is no card.
 
 ## Rules
 
